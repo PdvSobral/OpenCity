@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-public fun SettingsSection(
+fun SettingsSection(
     title: String,
     content: @Composable () -> Unit
 ) {
