@@ -19,11 +19,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.opencity.ui.components.settings.SettingsMultipleOption
 import com.example.opencity.ui.components.settings.SettingsAction
 import com.example.opencity.ui.components.settings.SettingsDivider
 import com.example.opencity.ui.components.settings.SettingsSection
 import com.example.opencity.ui.components.settings.SettingsSwitch
+import com.example.opencity.ui.components.settings.SettingsSingleFromMultiple
+import com.example.opencity.ui.components.settings.SettingsOption
+
 
 enum class MapOrientation {
     NORTH_UP,
@@ -80,34 +82,28 @@ fun SettingsScreen(
         ) {
             item {
                 SettingsSection(title = "Appearance") {
-                    Text(
-                        text = "Interface mode",
-                        modifier = Modifier.padding(start = 16.dp, top = 12.dp, end = 16.dp),
-                        style = MaterialTheme.typography.titleSmall
-                    )
-                    Text(
-                        text = "Choose the appearance style of the app",
-                        modifier = Modifier.padding(start = 16.dp, top = 2.dp, end = 16.dp, bottom = 4.dp),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    SettingsMultipleOption(
-                        title = "Automatic",
-                        description = "Follow system's mode",
-                        selected = darkModeType == DarkModeType.AUTO,
-                        onClick = { darkModeType = DarkModeType.AUTO }
-                    )
-                    SettingsMultipleOption(
-                        title = "Light mode",
-                        description = "Always light mode",
-                        selected = darkModeType == DarkModeType.LIGHT_MODE,
-                        onClick = { darkModeType = DarkModeType.LIGHT_MODE }
-                    )
-                    SettingsMultipleOption(
-                        title = "Dark mode",
-                        description = "Always dark mode",
-                        selected = darkModeType == DarkModeType.DARK_MODE,
-                        onClick = { darkModeType = DarkModeType.DARK_MODE }
+                    SettingsSingleFromMultiple(
+                        title = "Interface mode",
+                        description = "Choose the appearance style of the app",
+                        options = listOf(
+                            SettingsOption(
+                                value = DarkModeType.AUTO,
+                                title = "Automatic",
+                                description = "Follow system's mode"
+                            ),
+                            SettingsOption(
+                                value = DarkModeType.LIGHT_MODE,
+                                title = "Light mode",
+                                description = "Always light mode"
+                            ),
+                            SettingsOption(
+                                value = DarkModeType.DARK_MODE,
+                                title = "Dark mode",
+                                description = "Always dark mode"
+                            )
+                        ),
+                        selectedValue = darkModeType,
+                        onValueSelected = { selected -> darkModeType = selected }
                     )
 
                     SettingsDivider()
@@ -160,35 +156,29 @@ fun SettingsScreen(
             }
 
             item {
-                SettingsSection(title = "Map") { // TODO: make selection of a single on multiple a component
-                    Text(
-                        text = "Orientation",
-                        modifier = Modifier.padding(start = 16.dp, top = 12.dp, end = 16.dp),
-                        style = MaterialTheme.typography.titleSmall
-                    )
-                    Text(
-                        text = "Choose how the map should rotate",
-                        modifier = Modifier.padding(start = 16.dp, top = 2.dp, end = 16.dp, bottom = 4.dp),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                    SettingsMultipleOption(
-                        title = "North up",
-                        description = "Keep north at the top of the map",
-                        selected = mapOrientation == MapOrientation.NORTH_UP,
-                        onClick = { mapOrientation = MapOrientation.NORTH_UP }
-                    )
-                    SettingsMultipleOption(
-                        title = "Manual rotation",
-                        description = "Rotate the map using gestures",
-                        selected = mapOrientation == MapOrientation.MANUAL_ROTATION,
-                        onClick = { mapOrientation = MapOrientation.MANUAL_ROTATION }
-                    )
-                    SettingsMultipleOption(
-                        title = "Compass",
-                        description = "Rotate the map according to your device",
-                        selected = mapOrientation == MapOrientation.COMPASS,
-                        onClick = { mapOrientation = MapOrientation.COMPASS }
+                SettingsSection(title = "Map") {
+                    SettingsSingleFromMultiple(
+                        title = "Orientation",
+                        description = "Choose how the map should rotate",
+                        options = listOf(
+                            SettingsOption(
+                                value = MapOrientation.NORTH_UP,
+                                title = "North up",
+                                description = "Keep north at the top of the map"
+                            ),
+                            SettingsOption(
+                                value = MapOrientation.MANUAL_ROTATION,
+                                title = "Manual rotation",
+                                description = "Allow for free manual rotattion of the map"
+                            ),
+                            SettingsOption(
+                                value = MapOrientation.COMPASS,
+                                title = "Compass",
+                                description = "Rotate the map according to the device's internal compass"
+                            )
+                        ),
+                        selectedValue = mapOrientation,
+                        onValueSelected = { selected -> mapOrientation = selected }
                     )
 
                     SettingsDivider()

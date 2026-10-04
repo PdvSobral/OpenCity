@@ -1,6 +1,7 @@
 package com.example.opencity.ui.components
 
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Assignment
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Assignment
 import androidx.compose.material.icons.outlined.Map
@@ -26,7 +27,7 @@ fun OpenCityBottomBar(
 ) {
     val items = listOf(
         BottomBarItem("map", "Map", Icons.Outlined.Map),
-        BottomBarItem("reports", "Reports", Icons.Outlined.Assignment),
+        BottomBarItem("reports", "Reports", Icons.AutoMirrored.Outlined.Assignment),
         BottomBarItem(
             "notifications",
             "Notifications",
