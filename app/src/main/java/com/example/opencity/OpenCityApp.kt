@@ -17,6 +17,7 @@ import com.example.opencity.ui.screens.NotificationsScreen
 import com.example.opencity.ui.screens.ReportsScreen
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.Column
+import com.example.opencity.ui.screens.SettingsScreen
 
 
 @Composable
@@ -51,6 +52,7 @@ fun OpenCityApp(
                 composable("reports") { ReportsScreen() }
                 composable("notifications") { NotificationsScreen() }
                 composable("account") { AccountScreen() }
+                composable("settings") { SettingsScreen() }
             }
         }
     }

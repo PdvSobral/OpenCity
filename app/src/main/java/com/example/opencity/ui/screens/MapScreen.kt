@@ -28,40 +28,29 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun MapScreen(
-    onCreateReport: () -> Unit
-) {
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
+fun MapScreen(onCreateReport: () -> Unit) {
+    Column(modifier = Modifier.fillMaxSize()) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier = Modifier.fillMaxWidth().padding(16.dp).background(MaterialTheme.colorScheme.surfaceContainer),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Column {
                 Text(
                     text = "OpenCity",
                     style = MaterialTheme.typography.headlineSmall
                 )
-
                 Text(
                     text = "What is happening in your city?",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-
-            OutlinedButton(
-                onClick = onCreateReport
-            ) {
+            OutlinedButton(onClick = onCreateReport) {
                 Icon(
                     imageVector = Icons.Default.Report,
                     contentDescription = "Create report"
                 )
-
                 Text(
                     text = "Report",
                     modifier = Modifier.padding(start = 6.dp)
@@ -70,17 +59,13 @@ fun MapScreen(
         }
 
         Box(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-        ) {
+            modifier = Modifier.weight(1f).fillMaxWidth()) {
             Text(
                 text = "Map preview",
                 modifier = Modifier.align(Alignment.Center),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
-
             // Example map markers
             Box(
                 modifier = Modifier
@@ -96,7 +81,6 @@ fun MapScreen(
                     tint = Color.White
                 )
             }
-
             Box(
                 modifier = Modifier
                     .padding(start = 240.dp, top = 220.dp)
@@ -111,11 +95,8 @@ fun MapScreen(
                     tint = Color.White
                 )
             }
-
             Column(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(16.dp),
+                modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 FloatingActionButton(
@@ -127,7 +108,6 @@ fun MapScreen(
                         contentDescription = "Zoom in"
                     )
                 }
-
                 FloatingActionButton(
                     onClick = {},
                     modifier = Modifier.size(48.dp)

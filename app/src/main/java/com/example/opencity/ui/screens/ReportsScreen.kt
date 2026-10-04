@@ -48,17 +48,12 @@ fun ReportsScreen() {
         )
     )
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 16.dp)
-    ) {
+    Column(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
         Text(
             text = "My reports",
             modifier = Modifier.padding(top = 20.dp),
             style = MaterialTheme.typography.headlineSmall
         )
-
         Text(
             text = "Follow the status of your reports",
             modifier = Modifier.padding(top = 4.dp, bottom = 16.dp),

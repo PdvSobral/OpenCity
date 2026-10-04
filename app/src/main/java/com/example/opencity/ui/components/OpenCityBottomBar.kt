@@ -5,6 +5,7 @@ import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Assignment
 import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -31,25 +32,22 @@ fun OpenCityBottomBar(
             "Notifications",
             Icons.Outlined.Notifications
         ),
-        BottomBarItem("account", "Account", Icons.Outlined.AccountCircle)
+        BottomBarItem("account", "Account", Icons.Outlined.AccountCircle),
+        BottomBarItem("settings", "Settings", Icons.Outlined.Settings)
     )
 
     NavigationBar {
         items.forEach { item ->
             NavigationBarItem(
                 selected = currentRoute == item.route,
-                onClick = {
-                    onItemSelected(item.route)
-                },
+                onClick = { onItemSelected(item.route) },
                 icon = {
                     Icon(
                         imageVector = item.icon,
                         contentDescription = item.label
                     )
                 },
-                label = {
-                    Text(item.label)
-                }
+                label = { Text(item.label) }
             )
         }
     }
