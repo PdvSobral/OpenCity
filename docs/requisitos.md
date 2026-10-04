@@ -28,6 +28,7 @@
 	 			- Muda estado
 	 			- recebe um update
 	 			- é terminado
+ 		- App Language (translations)
 	 	- Mapa
 		 	- Capacidade para fazer download de mapas
 	 		- Modo Orientação \[Preso Norte, Manual, Sensor Bússola\]

@@ -7,10 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.activity.enableEdgeToEdge
-import com.example.opencity.ui.Conversation
-import com.example.opencity.ui.SampleData
+import com.example.opencity.ui.components.Conversation
+import com.example.opencity.ui.components.SampleData
 import com.example.opencity.ui.theme.OpenCityTheme
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +17,6 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
-import androidx.compose.ui.Alignment
 
 
 class MainActivity : ComponentActivity() {
