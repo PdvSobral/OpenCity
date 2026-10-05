@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.opencity.models.Message
 import com.example.opencity.ui.components.MessageCard
+import com.example.opencity.ui.components.TopBar
 
 @Composable
 fun NotificationsScreen() {
@@ -44,18 +45,7 @@ fun NotificationsScreen() {
     )
 
     Column( modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp) ) {
-        Text(
-            text = "Notifications",
-            modifier = Modifier.padding(top = 20.dp),
-            style = MaterialTheme.typography.headlineSmall
-        )
-
-        Text(
-            text = "Updates about your activity",
-            modifier = Modifier.padding(top = 4.dp, bottom = 16.dp),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+        TopBar("Notifications", "Updates about your activity")
 
         LazyColumn(
             contentPadding = PaddingValues(bottom = 16.dp),

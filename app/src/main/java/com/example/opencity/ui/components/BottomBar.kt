@@ -20,7 +20,7 @@ data class BottomBarItem(
 )
 
 @Composable
-fun OpenCityBottomBar(
+fun BottomBar(
     currentRoute: String?,
     onItemSelected: (String) -> Unit
 ) {

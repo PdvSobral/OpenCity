@@ -19,6 +19,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.opencity.ui.components.TopBar
 import com.example.opencity.ui.components.settings.SettingsAction
 import com.example.opencity.ui.components.settings.SettingsDivider
 import com.example.opencity.ui.components.settings.SettingsSection
@@ -64,17 +65,7 @@ fun SettingsScreen(
     var pathTracingEnabled by rememberSaveable { mutableStateOf(false) }
 
     Column(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
-        Text(
-            text = "Settings",
-            modifier = Modifier.padding(top = 20.dp),
-            style = MaterialTheme.typography.headlineSmall
-        )
-        Text(
-            text = "Customize your OpenCity experience",
-            modifier = Modifier.padding(top = 4.dp, bottom = 16.dp),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+        TopBar("Settings", "Customize your OpenCity experience")
 
         LazyColumn(
             contentPadding = PaddingValues(bottom = 24.dp),

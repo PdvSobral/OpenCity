@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.opencity.ui.components.TopBar
 
 @Composable
 fun MapScreen(onCreateReport: () -> Unit) {
@@ -35,17 +36,7 @@ fun MapScreen(onCreateReport: () -> Unit) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Column {
-                Text(
-                    text = "OpenCity",
-                    style = MaterialTheme.typography.headlineSmall
-                )
-                Text(
-                    text = "What is happening in your city?",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
+            TopBar("OpenCity", "What is happening in your city?")
             OutlinedButton(onClick = onCreateReport) {
                 Icon(
                     imageVector = Icons.Default.Report,

@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.example.opencity.models.Report
 import com.example.opencity.models.ReportStatus
 import com.example.opencity.ui.components.ReportCard
+import com.example.opencity.ui.components.TopBar
 
 @Composable
 fun ReportsScreen() {
@@ -49,17 +50,7 @@ fun ReportsScreen() {
     )
 
     Column(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
-        Text(
-            text = "My reports",
-            modifier = Modifier.padding(top = 20.dp),
-            style = MaterialTheme.typography.headlineSmall
-        )
-        Text(
-            text = "Follow the status of your reports",
-            modifier = Modifier.padding(top = 4.dp, bottom = 16.dp),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+        TopBar("My reports", "Follow the status of your reports")
 
         LazyColumn(
             contentPadding = PaddingValues(bottom = 16.dp),
