@@ -27,19 +27,13 @@ fun BottomBar(
     val items = listOf(
         BottomBarItem("map", "Map", Icons.Outlined.Map),
         BottomBarItem("reports", "Reports", Icons.AutoMirrored.Outlined.Assignment),
-        BottomBarItem(
-            "notifications",
-            "Notifications",
-            Icons.Outlined.Notifications
-        ),
+        BottomBarItem("notifications", "Notifications", Icons.Outlined.Notifications),
         BottomBarItem("account", "Account", Icons.Outlined.AccountCircle),
-        BottomBarItem("settings", "Settings", Icons.Outlined.Settings)
     )
-
     NavigationBar {
         items.forEach { item ->
             NavigationBarItem(
-                selected = currentRoute == item.route,
+                selected = currentRoute?.contains(item.route) == true ,
                 onClick = { onItemSelected(item.route) },
                 icon = {
                     Icon(

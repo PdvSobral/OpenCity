@@ -49,14 +49,9 @@ fun ReportsScreen() {
 
     Column(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
         TopBar("My reports", "Follow the status of your reports")
-
         LazyColumn(
             contentPadding = PaddingValues(bottom = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            items(reports) { report ->
-                ReportCard(report = report)
-            }
-        }
+        ) {items(reports) { report -> ReportCard(report = report)}}
     }
 }

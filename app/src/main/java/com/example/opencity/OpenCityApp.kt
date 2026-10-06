@@ -53,16 +53,20 @@ fun OpenCityApp(
                 composable("map") {MapScreen(onCreateReport = {})} // Add report creation navigation later.
                 composable("reports") { ReportsScreen() }
                 composable("notifications") { NotificationsScreen() }
-                composable("account") { AccountScreen(account = Account(
-                    id = 1,
-                    username = "alex",
-                    displayName = "Alex Smith",
-                    points = 125,
-                    role = AccountRole.USER,
-                    createdAt = "2026"
-                )
-                ) }
-                composable("settings") { SettingsScreen() }
+                composable("account") {
+                    AccountScreen(account = Account(
+                        id = 1,
+                        username = "alex",
+                        displayName = "Alex Smith",
+                        points = 125,
+                        role = AccountRole.USER,
+                        createdAt = "2026"
+                    ),
+                    onAppSettings = {
+                        navController.navigate("account_appsettings")
+                    })
+                }
+                composable("account_appsettings") { SettingsScreen() }
             }
         }
     }

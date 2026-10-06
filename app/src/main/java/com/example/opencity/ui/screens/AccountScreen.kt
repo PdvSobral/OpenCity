@@ -77,10 +77,12 @@ fun AccountScreen(
                 account = account,
                 onEditProfile = onEditProfile
             )
-            AccountStats(
-                points = account.points,
-                role = account.role
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
+                StatCard(value = account.points.toString())
+            }
             AccountSection(title = "Your activity") {
                 AccountAction(
                     icon = Icons.Outlined.Star,
@@ -179,13 +181,22 @@ private fun AccountHeader(
                 AccountAvatar(account)
                 Spacer(modifier = Modifier.width(16.dp))
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(
-                        text = account.displayName ?.takeIf { it.isNotBlank() } ?: account.username,
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
+                    Row(verticalAlignment = Alignment.CenterVertically){
+                        Text(
+                            text = account.displayName ?.takeIf { it.isNotBlank() } ?: account.username,
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                        IconButton(onClick = onEditProfile) {
+                            Icon(
+                                imageVector = Icons.Outlined.Edit,
+                                contentDescription = "Edit profile"
+                            )
+                        }
+                    }
+                    // TODO: Move it more up, reducing margins
                     Text(
                         text = "@${account.username}",
                         style = MaterialTheme.typography.bodyMedium,
@@ -193,12 +204,6 @@ private fun AccountHeader(
                     )
                     Spacer(modifier = Modifier.height(6.dp))
                     RoleBadge(account.role)
-                }
-                IconButton(onClick = onEditProfile) {
-                    Icon(
-                        imageVector = Icons.Outlined.Edit,
-                        contentDescription = "Edit profile"
-                    )
                 }
             }
             account.createdAt?.let {
@@ -253,60 +258,21 @@ private fun RoleBadge(role: AccountRole) {
 }
 
 @Composable
-private fun AccountStats(
-    points: Int,
-    role: AccountRole
-) {
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
-        StatCard(
-            modifier = Modifier.weight(1f),
-            value = points.toString(),
-            label = "Points",
-            icon = Icons.Outlined.Star
-        )
-        StatCard(
-            modifier = Modifier.weight(1f),
-            value = when (role) {
-                AccountRole.USER -> "User"
-                AccountRole.ADMINISTRATOR -> "Admin"
-            },
-            label = "Access level",
-            icon = Icons.Outlined.AccountCircle
-        )
-    }
-}
-
-@Composable
-private fun StatCard(
-    modifier: Modifier,
-    value: String,
-    label: String,
-    icon: ImageVector
-) {
+private fun StatCard(value: String) {
     Card(
-        modifier = modifier,
         shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Row(modifier = Modifier.padding(10.dp)) {
             Icon(
-                imageVector = icon,
+                imageVector = Icons.Outlined.Star,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary
             )
-            Spacer(modifier = Modifier.height(10.dp))
             Text(
                 text = value,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = label,
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
