@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -30,25 +31,10 @@ import com.example.opencity.ui.components.TopBar
 
 @Composable
 fun MapScreen(onCreateReport: () -> Unit) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        Row(
-            modifier = Modifier.fillMaxWidth().padding(16.dp).background(MaterialTheme.colorScheme.surfaceContainer),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
+    Column(modifier = Modifier.fillMaxSize().padding(all = 0.dp)) {
+        Row(modifier = Modifier.fillMaxWidth().padding(all = 0.dp)) {
             TopBar("OpenCity", "What is happening in your city?")
-            OutlinedButton(onClick = onCreateReport) {
-                Icon(
-                    imageVector = Icons.Default.Report,
-                    contentDescription = "Create report"
-                )
-                Text(
-                    text = "Report",
-                    modifier = Modifier.padding(start = 6.dp)
-                )
-            }
         }
-
         Box(
             modifier = Modifier.weight(1f).fillMaxWidth()) {
             Text(
@@ -106,6 +92,20 @@ fun MapScreen(onCreateReport: () -> Unit) {
                     Icon(
                         imageVector = Icons.Default.Remove,
                         contentDescription = "Zoom out"
+                    )
+                }
+                // TODO: Move the button up, probably a secondary column on top, with a compass
+                OutlinedButton(
+                    modifier = Modifier.size(height = 40.dp, width = 122.dp),
+                    onClick = onCreateReport
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Report,
+                        contentDescription = "Create report"
+                    )
+                    Text(
+                        text = "Report",
+                        modifier = Modifier.padding(all = 0.dp)
                     )
                 }
             }

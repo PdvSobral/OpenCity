@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -42,16 +43,13 @@ fun NotificationsScreen() {
         )
     )
 
-    Column( modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp) ) {
+    Column(modifier = Modifier.fillMaxWidth()) {
         TopBar("Notifications", "Updates about your activity")
-
-        LazyColumn(
-            contentPadding = PaddingValues(bottom = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
-        ) {
-            items(messages) { message ->
-                MessageCard(message = message)
-            }
+        Column( modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp) ) {
+            LazyColumn(
+                contentPadding = PaddingValues(bottom = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) { items(messages) { message -> MessageCard(message = message) } }
         }
     }
 }

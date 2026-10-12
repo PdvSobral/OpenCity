@@ -64,234 +64,235 @@ fun SettingsScreen(
     var heatmapEnabled by rememberSaveable { mutableStateOf(false) }
     var pathTracingEnabled by rememberSaveable { mutableStateOf(false) }
 
-    Column(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
+    Column(modifier = Modifier.fillMaxSize()) {
         TopBar("Settings", "Customize your OpenCity experience")
-
-        LazyColumn(
-            contentPadding = PaddingValues(bottom = 24.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            item {
-                SettingsSection(title = "Appearance") {
-                    SettingsSingleFromMultiple(
-                        title = "Interface mode",
-                        description = "Choose the appearance style of the app",
-                        options = listOf(
-                            SettingsOption(
-                                value = DarkModeType.AUTO,
-                                title = "Automatic",
-                                description = "Follow system's mode"
+        Column(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
+            LazyColumn(
+                contentPadding = PaddingValues(bottom = 24.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                item {
+                    SettingsSection(title = "Appearance") {
+                        SettingsSingleFromMultiple(
+                            title = "Interface mode",
+                            description = "Choose the appearance style of the app",
+                            options = listOf(
+                                SettingsOption(
+                                    value = DarkModeType.AUTO,
+                                    title = "Automatic",
+                                    description = "Follow system's mode"
+                                ),
+                                SettingsOption(
+                                    value = DarkModeType.LIGHT_MODE,
+                                    title = "Light mode",
+                                    description = "Always light mode"
+                                ),
+                                SettingsOption(
+                                    value = DarkModeType.DARK_MODE,
+                                    title = "Dark mode",
+                                    description = "Always dark mode"
+                                )
                             ),
-                            SettingsOption(
-                                value = DarkModeType.LIGHT_MODE,
-                                title = "Light mode",
-                                description = "Always light mode"
-                            ),
-                            SettingsOption(
-                                value = DarkModeType.DARK_MODE,
-                                title = "Dark mode",
-                                description = "Always dark mode"
-                            )
-                        ),
-                        selectedValue = darkModeType,
-                        onValueSelected = { selected -> darkModeType = selected }
-                    )
+                            selectedValue = darkModeType,
+                            onValueSelected = { selected -> darkModeType = selected }
+                        )
 
-                    SettingsDivider()
+                        SettingsDivider()
 
-                    SettingsSwitch(
-                        title = "Animations",
-                        description = "Enable transitions and interface animations.\nMight decrease performance.",
-                        checked = animationsEnabled,
-                        onCheckedChange = { animationsEnabled = it }
-                    )
+                        SettingsSwitch(
+                            title = "Animations",
+                            description = "Enable transitions and interface animations.\nMight decrease performance.",
+                            checked = animationsEnabled,
+                            onCheckedChange = { animationsEnabled = it }
+                        )
+                    }
                 }
-            }
 
-            item {
-                SettingsSection(title = "Notifications") {
-                    SettingsSwitch(
-                        title = "Nearby reports",
-                        description = "Notify me about reports near my location",
-                        checked = nearbyNotifications,
-                        onCheckedChange = { nearbyNotifications = it }
-                    )
+                item {
+                    SettingsSection(title = "Notifications") {
+                        SettingsSwitch(
+                            title = "Nearby reports",
+                            description = "Notify me about reports near my location",
+                            checked = nearbyNotifications,
+                            onCheckedChange = { nearbyNotifications = it }
+                        )
 
-                    SettingsDivider()
+                        SettingsDivider()
 
-                    SettingsSwitch(
-                        title = "Report updates",
-                        description = "Notify me when a report changes status",
-                        checked = reportUpdates,
-                        onCheckedChange = { reportUpdates = it }
-                    )
+                        SettingsSwitch(
+                            title = "Report updates",
+                            description = "Notify me when a report changes status",
+                            checked = reportUpdates,
+                            onCheckedChange = { reportUpdates = it }
+                        )
 
-                    SettingsDivider()
+                        SettingsDivider()
 
-                    SettingsSwitch(
-                        title = "Comments",
-                        description = "Notify me when someone comments on my reports",
-                        checked = commentNotifications,
-                        onCheckedChange = { commentNotifications = it }
-                    )
+                        SettingsSwitch(
+                            title = "Comments",
+                            description = "Notify me when someone comments on my reports",
+                            checked = commentNotifications,
+                            onCheckedChange = { commentNotifications = it }
+                        )
 
-                    SettingsDivider()
+                        SettingsDivider()
 
-                    SettingsSwitch(
-                        title = "High-severity reports",
-                        description = "Notify me about urgent problems in my area",
-                        checked = highSeverityNotifications,
-                        onCheckedChange = { highSeverityNotifications = it }
-                    )
+                        SettingsSwitch(
+                            title = "High-severity reports",
+                            description = "Notify me about urgent problems in my area",
+                            checked = highSeverityNotifications,
+                            onCheckedChange = { highSeverityNotifications = it }
+                        )
+                    }
                 }
-            }
 
-            item {
-                SettingsSection(title = "Map") {
-                    SettingsSingleFromMultiple(
-                        title = "Orientation",
-                        description = "Choose how the map should rotate",
-                        options = listOf(
-                            SettingsOption(
-                                value = MapOrientation.NORTH_UP,
-                                title = "North up",
-                                description = "Keep north at the top of the map"
+                item {
+                    SettingsSection(title = "Map") {
+                        SettingsSingleFromMultiple(
+                            title = "Orientation",
+                            description = "Choose how the map should rotate",
+                            options = listOf(
+                                SettingsOption(
+                                    value = MapOrientation.NORTH_UP,
+                                    title = "North up",
+                                    description = "Keep north at the top of the map"
+                                ),
+                                SettingsOption(
+                                    value = MapOrientation.MANUAL_ROTATION,
+                                    title = "Manual rotation",
+                                    description = "Allow for free manual rotattion of the map"
+                                ),
+                                SettingsOption(
+                                    value = MapOrientation.COMPASS,
+                                    title = "Compass",
+                                    description = "Rotate the map according to the device's internal compass"
+                                )
                             ),
-                            SettingsOption(
-                                value = MapOrientation.MANUAL_ROTATION,
-                                title = "Manual rotation",
-                                description = "Allow for free manual rotattion of the map"
-                            ),
-                            SettingsOption(
-                                value = MapOrientation.COMPASS,
-                                title = "Compass",
-                                description = "Rotate the map according to the device's internal compass"
-                            )
-                        ),
-                        selectedValue = mapOrientation,
-                        onValueSelected = { selected -> mapOrientation = selected }
-                    )
+                            selectedValue = mapOrientation,
+                            onValueSelected = { selected -> mapOrientation = selected }
+                        )
 
-                    SettingsDivider()
+                        SettingsDivider()
 
-                    SettingsSwitch(
-                        title = "Heatmap",
-                        description = "Show areas with a high concentration of reports",
-                        checked = heatmapEnabled,
-                        onCheckedChange = { heatmapEnabled = it }
-                    )
+                        SettingsSwitch(
+                            title = "Heatmap",
+                            description = "Show areas with a high concentration of reports",
+                            checked = heatmapEnabled,
+                            onCheckedChange = { heatmapEnabled = it }
+                        )
 
-                    SettingsDivider()
+                        SettingsDivider()
 
-                    SettingsSwitch(
-                        title = "Path tracing",
-                        description = "Show paths and routes on the map",
-                        checked = pathTracingEnabled,
-                        onCheckedChange = { pathTracingEnabled = it }
-                    )
-
-                    SettingsDivider()
-
-                    SettingsAction(
-                        title = "Offline maps",
-                        description = "Download and manage offline map areas",
-                        buttonText = "Manage",
-                        onClick = onOfflineMaps
-                    )
-
-                    SettingsAction(
-                        title = "Custom markers",
-                        description = "Create and manage your map markers",
-                        buttonText = "Manage",
-                        onClick = onManageMarkers
-                    )
-                }
-            }
-
-            item {
-                SettingsSection(title = "Account") {
-                    if (isLoggedIn) {
-                        SettingsAction(
-                            title = "Account settings",
-                            description = "Manage your profile and login information",
-                            buttonText = "Open",
-                            onClick = onAccountSettings
+                        SettingsSwitch(
+                            title = "Path tracing",
+                            description = "Show paths and routes on the map",
+                            checked = pathTracingEnabled,
+                            onCheckedChange = { pathTracingEnabled = it }
                         )
 
                         SettingsDivider()
 
                         SettingsAction(
-                            title = "Contribution history",
-                            description = "View your reports, comments, and points",
-                            buttonText = "View",
-                            onClick = onContributionHistory
+                            title = "Offline maps",
+                            description = "Download and manage offline map areas",
+                            buttonText = "Manage",
+                            onClick = onOfflineMaps
                         )
-
-                        SettingsDivider()
 
                         SettingsAction(
-                            title = "Export contributions",
-                            description = "Export your reports and activity as CSV or JSON",
-                            buttonText = "Export",
-                            onClick = onExportData
+                            title = "Custom markers",
+                            description = "Create and manage your map markers",
+                            buttonText = "Manage",
+                            onClick = onManageMarkers
                         )
+                    }
+                }
 
-                        SettingsDivider()
-
-                        TextButton(
-                            onClick = onLogout,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 8.dp)
-                        ) {
-                            Text(
-                                text = "Log out",
-                                color = MaterialTheme.colorScheme.error
+                item {
+                    SettingsSection(title = "Account") {
+                        if (isLoggedIn) {
+                            SettingsAction(
+                                title = "Account settings",
+                                description = "Manage your profile and login information",
+                                buttonText = "Open",
+                                onClick = onAccountSettings
                             )
-                        }
-                    } else {
-                        ListItem(
-                            headlineContent = {
-                                Text("Anonymous access")
-                            },
-                            supportingContent = {
+
+                            SettingsDivider()
+
+                            SettingsAction(
+                                title = "Contribution history",
+                                description = "View your reports, comments, and points",
+                                buttonText = "View",
+                                onClick = onContributionHistory
+                            )
+
+                            SettingsDivider()
+
+                            SettingsAction(
+                                title = "Export contributions",
+                                description = "Export your reports and activity as CSV or JSON",
+                                buttonText = "Export",
+                                onClick = onExportData
+                            )
+
+                            SettingsDivider()
+
+                            TextButton(
+                                onClick = onLogout,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(horizontal = 8.dp)
+                            ) {
                                 Text(
-                                    "You can view public reports, but account features are unavailable."
+                                    text = "Log out",
+                                    color = MaterialTheme.colorScheme.error
                                 )
                             }
-                        )
+                        } else {
+                            ListItem(
+                                headlineContent = {
+                                    Text("Anonymous access")
+                                },
+                                supportingContent = {
+                                    Text(
+                                        "You can view public reports, but account features are unavailable."
+                                    )
+                                }
+                            )
 
-                        Button(
-                            onClick = onAccountSettings,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(16.dp)
-                        ) {
-                            Text("Create an account")
+                            Button(
+                                onClick = onAccountSettings,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp)
+                            ) {
+                                Text("Create an account")
+                            }
                         }
                     }
                 }
-            }
 
-            item {
-                SettingsSection(title = "Server") {
-                    SettingsAction(
-                        title = "Server configuration",
-                        description = "Change the OpenCity server connection",
-                        buttonText = "Configure",
-                        onClick = onServerConfiguration
-                    )
+                item {
+                    SettingsSection(title = "Server") {
+                        SettingsAction(
+                            title = "Server configuration",
+                            description = "Change the OpenCity server connection",
+                            buttonText = "Configure",
+                            onClick = onServerConfiguration
+                        )
+                    }
                 }
-            }
 
-            item {
-                SettingsSection(title = "Privacy and data") {
-                    SettingsAction(
-                        title = "Privacy and data management",
-                        description = "Manage stored data and account privacy options",
-                        buttonText = "Open",
-                        onClick = onAccountSettings
-                    )
+                item {
+                    SettingsSection(title = "Privacy and data") {
+                        SettingsAction(
+                            title = "Privacy and data management",
+                            description = "Manage stored data and account privacy options",
+                            buttonText = "Open",
+                            onClick = onAccountSettings
+                        )
+                    }
                 }
             }
         }

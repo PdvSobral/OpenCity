@@ -63,97 +63,99 @@ fun AccountScreen(
     onDeleteAccount: () -> Unit = {},
     onAdminDashboard: () -> Unit = {}
 ) {
-    Column(Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
+    Column(modifier = Modifier.fillMaxWidth()) {
         TopBar("Account")
-        Column(
-            modifier = Modifier
-                .weight(1f).fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            AccountHeader(
-                account = account,
-                onEditProfile = onEditProfile
-            )
-            AccountSection(title = "Your activity") {
-                AccountAction(
-                    icon = Icons.Outlined.Star,
-                    title = "Contribution history",
-                    subtitle = "View your reports, comments, and confirmations",
-                    onClick = onContributionHistory
+        Column(Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
+            Column(
+                modifier = Modifier
+                    .weight(1f).fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                AccountHeader(
+                    account = account,
+                    onEditProfile = onEditProfile
                 )
-                AccountAction(
-                    icon = Icons.Outlined.Download,
-                    title = "Export your data",
-                    subtitle = "Download your reports and contributions",
-                    onClick = onExportData
-                )
-            }
-            AccountSection(title = "Account settings") {
-                AccountAction(
-                    icon = Icons.Outlined.Notifications,
-                    title = "Notifications",
-                    subtitle = "Manage report and activity notifications",
-                    onClick = onNotificationSettings
-                )
-                AccountAction(
-                    icon = Icons.Outlined.Lock,
-                    title = "Security",
-                    subtitle = "Manage your password and login methods",
-                    onClick = onSecuritySettings
-                )
-                AccountAction(
-                    icon = Icons.Outlined.Settings,
-                    title = "Application settings",
-                    subtitle = "Theme, map, offline data, and preferences",
-                    onClick = onAppSettings
-                )
-            }
-            if (account.role == AccountRole.ADMINISTRATOR) {
-                AccountSection(title = "Administration") {
+                AccountSection(title = "Your activity") {
                     AccountAction(
-                        icon = Icons.Outlined.AdminPanelSettings,
-                        title = "Administration dashboard",
-                        subtitle = "Manage reports, users, and categories",
-                        onClick = onAdminDashboard
+                        icon = Icons.Outlined.Star,
+                        title = "Contribution history",
+                        subtitle = "View your reports, comments, and confirmations",
+                        onClick = onContributionHistory
+                    )
+                    AccountAction(
+                        icon = Icons.Outlined.Download,
+                        title = "Export your data",
+                        subtitle = "Download your reports and contributions",
+                        onClick = onExportData
                     )
                 }
+                AccountSection(title = "Account settings") {
+                    AccountAction(
+                        icon = Icons.Outlined.Notifications,
+                        title = "Notifications",
+                        subtitle = "Manage report and activity notifications",
+                        onClick = onNotificationSettings
+                    )
+                    AccountAction(
+                        icon = Icons.Outlined.Lock,
+                        title = "Security",
+                        subtitle = "Manage your password and login methods",
+                        onClick = onSecuritySettings
+                    )
+                    AccountAction(
+                        icon = Icons.Outlined.Settings,
+                        title = "Application settings",
+                        subtitle = "Theme, map, offline data, and preferences",
+                        onClick = onAppSettings
+                    )
+                }
+                if (account.role == AccountRole.ADMINISTRATOR) {
+                    AccountSection(title = "Administration") {
+                        AccountAction(
+                            icon = Icons.Outlined.AdminPanelSettings,
+                            title = "Administration dashboard",
+                            subtitle = "Manage reports, users, and categories",
+                            onClick = onAdminDashboard
+                        )
+                    }
+                }
+                AccountSection(title = "Other") {
+                    AccountAction(
+                        icon = Icons.Outlined.Info,
+                        title = "About OpenCity",
+                        subtitle = "Terms of use, licenses, and project information",
+                        onClick = onAbout
+                    )
+                }
+                OutlinedButton(
+                    onClick = onLogout,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Outlined.Logout,
+                        contentDescription = null
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Log out")
+                }
+                Button(
+                    onClick = onDeleteAccount,
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.errorContainer,
+                        contentColor = MaterialTheme.colorScheme.onErrorContainer
+                    )
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Delete,
+                        contentDescription = null
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text("Delete account")
+                }
+                Spacer(modifier = Modifier.height(12.dp))
             }
-            AccountSection(title = "Other") {
-                AccountAction(
-                    icon = Icons.Outlined.Info,
-                    title = "About OpenCity",
-                    subtitle = "Terms of use, licenses, and project information",
-                    onClick = onAbout
-                )
-            }
-            OutlinedButton(
-                onClick = onLogout,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Outlined.Logout,
-                    contentDescription = null
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Log out")
-            }
-            Button(
-                onClick = onDeleteAccount,
-                modifier = Modifier.fillMaxWidth(),
-                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.errorContainer,
-                    contentColor = MaterialTheme.colorScheme.onErrorContainer
-                )
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Delete,
-                    contentDescription = null
-                )
-                Spacer(modifier = Modifier.width(8.dp))
-                Text("Delete account")
-            }
-            Spacer(modifier = Modifier.height(12.dp))
         }
     }
 }
