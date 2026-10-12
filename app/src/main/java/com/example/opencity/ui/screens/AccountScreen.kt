@@ -19,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Logout
-import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.AdminPanelSettings
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Download
@@ -37,7 +36,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -77,12 +75,6 @@ fun AccountScreen(
                 account = account,
                 onEditProfile = onEditProfile
             )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                StatCard(value = account.points.toString())
-            }
             AccountSection(title = "Your activity") {
                 AccountAction(
                     icon = Icons.Outlined.Star,
@@ -176,12 +168,23 @@ private fun AccountHeader(
         shape = RoundedCornerShape(24.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
     ) {
-        Column(modifier = Modifier.padding(20.dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+        Column(
+            modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 8.dp, bottom = 14.dp),
+            verticalArrangement = Arrangement.spacedBy(0.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(0.dp)
+            ) {
                 AccountAvatar(account)
                 Spacer(modifier = Modifier.width(16.dp))
-                Column(modifier = Modifier.weight(1f)) {
-                    Row(verticalAlignment = Alignment.CenterVertically){
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(0.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.padding(0.dp)
+                    ){
                         Text(
                             text = account.displayName ?.takeIf { it.isNotBlank() } ?: account.username,
                             style = MaterialTheme.typography.titleLarge,
@@ -203,16 +206,16 @@ private fun AccountHeader(
                         color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.75f)
                     )
                     Spacer(modifier = Modifier.height(6.dp))
-                    RoleBadge(account.role)
+                    account.createdAt?.let {
+                        Text(
+                            text = "Member since $it",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.75f)
+                        )
+                    }
                 }
-            }
-            account.createdAt?.let {
-                Spacer(modifier = Modifier.height(16.dp))
-                Text(
-                    text = "Member since $it",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.75f)
-                )
+                Spacer(modifier = Modifier.weight(1f).fillMaxWidth())
+                StatCard(numeroPontos = account.points.toString())
             }
         }
     }
@@ -221,8 +224,7 @@ private fun AccountHeader(
 @Composable
 private fun AccountAvatar(account: Account) {
     val initials = buildString {
-        account.displayName?.split(" ")?.take(2)
-            ?.forEach { name -> name.firstOrNull()?.let { append(it.uppercase()) } }
+        account.displayName?.split(" ")?.take(2)?.forEach { name -> name.firstOrNull()?.let { append(it.uppercase()) } }
         if (isEmpty()) { append(account.username.take(2).uppercase()) }
     }
     Box(
@@ -239,38 +241,19 @@ private fun AccountAvatar(account: Account) {
 }
 
 @Composable
-private fun RoleBadge(role: AccountRole) {
-    val roleName = when (role) {
-        AccountRole.USER -> "Citizen"
-        AccountRole.ADMINISTRATOR -> "Administrator"
-    }
-    Surface(
-        shape = RoundedCornerShape(50),
-        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f)
-    ) {
-        Text(
-            text = roleName,
-            modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp),
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.onPrimaryContainer
-        )
-    }
-}
-
-@Composable
-private fun StatCard(value: String) {
+private fun StatCard(numeroPontos: String) {
     Card(
         shape = RoundedCornerShape(18.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
-        Row(modifier = Modifier.padding(10.dp)) {
+        Row(modifier = Modifier.padding(top = 6.dp, bottom = 4.dp, start = 8.dp, end = 10.dp)) {
             Icon(
                 imageVector = Icons.Outlined.Star,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary
             )
             Text(
-                text = value,
+                text = numeroPontos,
                 style = MaterialTheme.typography.titleLarge,
                 fontWeight = FontWeight.Bold
             )

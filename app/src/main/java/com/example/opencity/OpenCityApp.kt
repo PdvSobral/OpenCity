@@ -39,7 +39,7 @@ fun OpenCityApp(
                         navController.navigate(route) {
                             popUpTo("map") { saveState = true }
                             launchSingleTop = true
-                            restoreState = true
+                            restoreState = false
                         }
                     }
                 )
