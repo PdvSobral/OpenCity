@@ -54,14 +54,14 @@ fun OpenCityApp(
                 composable("reports") { ReportsScreen() }
                 composable("notifications") { NotificationsScreen() }
                 composable("account") {
-                    AccountScreen(account = Account(
+                    AccountScreen(/*account = Account(
                         id = 1,
                         username = "alex",
                         displayName = "Alex Smith",
                         points = 125,
                         role = AccountRole.USER,
                         createdAt = "2026"
-                    ),
+                    ),*/
                     onAppSettings = { navController.navigate("account_appsettings")})
                 }
                 composable("account_appsettings") { SettingsScreen(onReturn = { navController.popBackStack() } ) }

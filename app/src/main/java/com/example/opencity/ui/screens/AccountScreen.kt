@@ -50,8 +50,8 @@ import com.example.opencity.models.AccountRole
 import com.example.opencity.ui.components.TopBar
 
 @Composable
-fun AccountScreen( // TODO: Make Anonymous account handling (possibly when receiving none)
-    account: Account,
+fun AccountScreen(
+    account: Account? = null, // TODO: Later when making a more robust system, maybe force to be passed smething, even if null
     onEditProfile: () -> Unit = {},
     onContributionHistory: () -> Unit = {},
     onExportData: () -> Unit = {},
@@ -110,7 +110,7 @@ fun AccountScreen( // TODO: Make Anonymous account handling (possibly when recei
                         onClick = onAppSettings
                     )
                 }
-                if (account.role == AccountRole.ADMINISTRATOR) {
+                if ((account?.role ?: AccountRole.USER) == AccountRole.ADMINISTRATOR) {
                     AccountSection(title = "Administration") {
                         AccountAction(
                             icon = Icons.Outlined.AdminPanelSettings,
@@ -128,31 +128,49 @@ fun AccountScreen( // TODO: Make Anonymous account handling (possibly when recei
                         onClick = onAbout
                     )
                 }
-                OutlinedButton(
-                    onClick = onLogout,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Icon(
-                        imageVector = Icons.AutoMirrored.Outlined.Logout,
-                        contentDescription = null
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Log out")
-                }
-                Button(
-                    onClick = onDeleteAccount,
-                    modifier = Modifier.fillMaxWidth(),
-                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.errorContainer,
-                        contentColor = MaterialTheme.colorScheme.onErrorContainer
-                    )
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Delete,
-                        contentDescription = null
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text("Delete account")
+                if (account != null){
+                    OutlinedButton(
+                        onClick = onLogout,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Outlined.Logout,
+                            contentDescription = null
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Log out")
+                    }
+                    Button(
+                        onClick = onDeleteAccount,
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.errorContainer,
+                            contentColor = MaterialTheme.colorScheme.onErrorContainer
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.Delete,
+                            contentDescription = null
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text("Delete account")
+                    }
+                } else {
+                    Button(
+                        onClick = onDeleteAccount,
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary,
+                            contentColor = MaterialTheme.colorScheme.onPrimary
+                        )
+                    ) {
+                        /*Icon(
+                            imageVector = Icons.Outlined.Delete,
+                            contentDescription = null
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))*/
+                        Text("Create an Account!")
+                    }
                 }
                 Spacer(modifier = Modifier.height(12.dp))
             }
@@ -162,7 +180,7 @@ fun AccountScreen( // TODO: Make Anonymous account handling (possibly when recei
 
 @Composable
 private fun AccountHeader(
-    account: Account,
+    account: Account?,
     onEditProfile: () -> Unit
 ) {
     Card(
@@ -188,46 +206,46 @@ private fun AccountHeader(
                         modifier = Modifier.padding(0.dp)
                     ){
                         Text(
-                            text = account.displayName ?.takeIf { it.isNotBlank() } ?: account.username,
+                            text = (account?.displayName ?: "Anonymous").takeIf { it.isNotBlank() } ?: (account?.username ?: "anonymous"),
                             style = MaterialTheme.typography.titleLarge,
                             fontWeight = FontWeight.Bold,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis
                         )
-                        IconButton(onClick = onEditProfile) {
-                            Icon(
-                                imageVector = Icons.Outlined.Edit,
-                                contentDescription = "Edit profile"
-                            )
+                        if (account != null) {
+                            IconButton(onClick = onEditProfile) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Edit,
+                                    contentDescription = "Edit profile"
+                                )
+                            }
                         }
                     }
                     // TODO: Move it more up, reducing margins
                     Text(
-                        text = "@${account.username}",
+                        text = "@${account?.username ?: "anonymous"}",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.75f)
                     )
                     Spacer(modifier = Modifier.height(6.dp))
-                    account.createdAt?.let {
-                        Text(
-                            text = "Member since $it",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.75f)
-                        )
-                    }
+                    Text(
+                        text = "Member since ${(account?.createdAt ?: "N/A")}",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.75f)
+                    )
                 }
                 Spacer(modifier = Modifier.weight(1f).fillMaxWidth())
-                StatCard(numeroPontos = account.points.toString())
+                StatCard(numeroPontos = (account?.points ?: 0).toString())
             }
         }
     }
 }
 
 @Composable
-private fun AccountAvatar(account: Account) {
+private fun AccountAvatar(account: Account?) {
     val initials = buildString {
-        account.displayName?.split(" ")?.take(2)?.forEach { name -> name.firstOrNull()?.let { append(it.uppercase()) } }
-        if (isEmpty()) { append(account.username.take(2).uppercase()) }
+        (account?.displayName ?: "Anonymous").takeIf { it.isNotBlank() } ?: (account?.username ?: "anonymous").split(" ").take(2).forEach { name -> name.firstOrNull()?.let { append(it.uppercase()) } }
+        if (isEmpty()) { append((account?.username ?: "anonymous").take(2).uppercase()) }
     }
     Box(
         modifier = Modifier.size(76.dp).clip(CircleShape).background(MaterialTheme.colorScheme.primary),
