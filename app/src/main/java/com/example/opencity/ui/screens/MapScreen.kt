@@ -73,7 +73,27 @@ fun MapScreen(onCreateReport: () -> Unit) {
                 )
             }
             Column(
-                modifier = Modifier.align(Alignment.BottomEnd).padding(16.dp),
+                modifier = Modifier.align(Alignment.TopEnd).padding(top = 4.dp, bottom = 0.dp, start = 0.dp, end = 10.dp),
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                OutlinedButton(
+                    modifier = Modifier.size(height = 40.dp, width = 122.dp),
+                    onClick = onCreateReport
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Report,
+                        contentDescription = "Create report"
+                    )
+                    Text(
+                        text = "Report",
+                        modifier = Modifier.padding(all = 0.dp)
+                    )
+                }
+            }
+            Column(
+                modifier = Modifier.align(Alignment.BottomEnd).padding(top = 0.dp, bottom = 10.dp, start = 0.dp, end = 10.dp),
+                horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 FloatingActionButton(
@@ -92,20 +112,6 @@ fun MapScreen(onCreateReport: () -> Unit) {
                     Icon(
                         imageVector = Icons.Default.Remove,
                         contentDescription = "Zoom out"
-                    )
-                }
-                // TODO: Move the button up, probably a secondary column on top, with a compass
-                OutlinedButton(
-                    modifier = Modifier.size(height = 40.dp, width = 122.dp),
-                    onClick = onCreateReport
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Report,
-                        contentDescription = "Create report"
-                    )
-                    Text(
-                        text = "Report",
-                        modifier = Modifier.padding(all = 0.dp)
                     )
                 }
             }
