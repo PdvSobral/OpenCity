@@ -49,7 +49,8 @@ fun SettingsScreen(
     onContributionHistory: () -> Unit = {},
     onServerConfiguration: () -> Unit = {},
     onExportData: () -> Unit = {},
-    onLogout: () -> Unit = {}
+    onLogout: () -> Unit = {},
+    onReturn: () -> Unit = {}
 ) {
     var darkModeType by rememberSaveable { mutableStateOf(DarkModeType.AUTO) }
     var animationsEnabled by rememberSaveable { mutableStateOf(true) }
@@ -65,7 +66,7 @@ fun SettingsScreen(
     var pathTracingEnabled by rememberSaveable { mutableStateOf(false) }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        TopBar("Settings", "Customize your OpenCity experience")
+        TopBar("Settings", "Customize your OpenCity experience", true, onReturn)
         Column(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
             LazyColumn(
                 contentPadding = PaddingValues(bottom = 24.dp),
