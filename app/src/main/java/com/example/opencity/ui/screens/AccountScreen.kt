@@ -19,6 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Logout
+import androidx.compose.material.icons.outlined.PersonAdd
 import androidx.compose.material.icons.outlined.AdminPanelSettings
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Download
@@ -61,7 +62,8 @@ fun AccountScreen(
     onAbout: () -> Unit = {},
     onLogout: () -> Unit = {},
     onDeleteAccount: () -> Unit = {},
-    onAdminDashboard: () -> Unit = {}
+    onAdminDashboard: () -> Unit = {},
+    onCreateAccount: () -> Unit = {}
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         TopBar("Account")
@@ -157,18 +159,18 @@ fun AccountScreen(
                     }
                 } else {
                     Button(
-                        onClick = onDeleteAccount,
+                        onClick = onCreateAccount,
                         modifier = Modifier.fillMaxWidth(),
                         colors = androidx.compose.material3.ButtonDefaults.buttonColors(
                             containerColor = MaterialTheme.colorScheme.primary,
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )
                     ) {
-                        /*Icon(
-                            imageVector = Icons.Outlined.Delete,
+                        Icon(
+                            imageVector = Icons.Outlined.PersonAdd,
                             contentDescription = null
                         )
-                        Spacer(modifier = Modifier.width(8.dp))*/
+                        Spacer(modifier = Modifier.width(8.dp))
                         Text("Create an Account!")
                     }
                 }

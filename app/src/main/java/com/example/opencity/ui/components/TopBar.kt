@@ -46,19 +46,19 @@ fun TopBar(
             if (description != null) {
                 Text(
                     text = tittle,
-                    modifier = Modifier.padding(top = 20.dp),
+                    modifier = Modifier.padding(top = 12.dp),
                     style = MaterialTheme.typography.headlineSmall
                 )
                 Text(
                     text = description,
-                    modifier = Modifier.padding(top = 4.dp, bottom = 16.dp),
+                    modifier = Modifier.padding(top = 4.dp, bottom = 12.dp),
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             } else {
                 Text(
                     text = tittle,
-                    modifier = Modifier.padding(top = 20.dp, bottom = 16.dp),
+                    modifier = Modifier.padding(top = 12.dp, bottom = 12.dp),
                     style = MaterialTheme.typography.headlineSmall
                 )
             }
