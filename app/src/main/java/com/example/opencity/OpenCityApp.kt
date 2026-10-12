@@ -30,7 +30,7 @@ fun OpenCityApp(
     val currentDestination = navBackStackEntry?.destination
     val currentRoute = currentDestination?.route
 
-    Column (modifier = Modifier.fillMaxSize()) {
+    Column (modifier = Modifier.fillMaxSize()){
         Scaffold(
             bottomBar = {
                 BottomBar(
@@ -62,9 +62,7 @@ fun OpenCityApp(
                         role = AccountRole.USER,
                         createdAt = "2026"
                     ),
-                    onAppSettings = {
-                        navController.navigate("account_appsettings")
-                    })
+                    onAppSettings = { navController.navigate("account_appsettings")})
                 }
                 composable("account_appsettings") { SettingsScreen() }
             }

@@ -50,7 +50,7 @@ import com.example.opencity.models.AccountRole
 import com.example.opencity.ui.components.TopBar
 
 @Composable
-fun AccountScreen(
+fun AccountScreen( // TODO: Make Anonymous account handling (possibly when receiving none)
     account: Account,
     onEditProfile: () -> Unit = {},
     onContributionHistory: () -> Unit = {},

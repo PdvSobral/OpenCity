@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -17,6 +16,7 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material.icons.filled.Report
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -28,6 +28,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.opencity.ui.components.TopBar
+import com.example.opencity.ui.components.map.CompassIcon
 
 @Composable
 fun MapScreen(onCreateReport: () -> Unit) {
@@ -76,45 +77,54 @@ fun MapScreen(onCreateReport: () -> Unit) {
                 modifier = Modifier.align(Alignment.TopEnd).padding(top = 4.dp, bottom = 0.dp, start = 0.dp, end = 10.dp),
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                OutlinedButton(
-                    modifier = Modifier.size(height = 40.dp, width = 122.dp),
-                    onClick = onCreateReport
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Report,
-                        contentDescription = "Create report"
-                    )
-                    Text(
-                        text = "Report",
-                        modifier = Modifier.padding(all = 0.dp)
-                    )
-                }
-            }
+            ) { TopRightColumnContent(onCreateReport) }
             Column(
                 modifier = Modifier.align(Alignment.BottomEnd).padding(top = 0.dp, bottom = 10.dp, start = 0.dp, end = 10.dp),
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                FloatingActionButton(
-                    onClick = {},
-                    modifier = Modifier.size(48.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "Zoom in"
-                    )
-                }
-                FloatingActionButton(
-                    onClick = {},
-                    modifier = Modifier.size(48.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Remove,
-                        contentDescription = "Zoom out"
-                    )
-                }
-            }
+            ) { BottomRightColumnContent() }
         }
+    }
+}
+
+@Composable
+private fun TopRightColumnContent(onReportButtonClick: () -> Unit) {
+    OutlinedButton(
+        modifier = Modifier.size(height = 40.dp, width = 122.dp),
+        onClick = onReportButtonClick
+    ) {
+        Icon(
+            imageVector = Icons.Default.Report,
+            contentDescription = "Create report"
+        )
+        Text(
+            text = "Report",
+            modifier = Modifier.padding(all = 0.dp)
+        )
+    }
+    CompassIcon()
+}
+
+@Composable
+private fun BottomRightColumnContent() {
+    FloatingActionButton(
+        onClick = {},
+        modifier = Modifier.size(48.dp),
+        elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.Add,
+            contentDescription = "Zoom in"
+        )
+    }
+    FloatingActionButton(
+        onClick = {},
+        modifier = Modifier.size(48.dp),
+        elevation = FloatingActionButtonDefaults.elevation(0.dp, 0.dp, 0.dp, 0.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Default.Remove,
+            contentDescription = "Zoom out"
+        )
     }
 }
