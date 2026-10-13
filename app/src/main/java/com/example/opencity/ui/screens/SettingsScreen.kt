@@ -1,6 +1,7 @@
 package com.example.opencity.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,9 +17,14 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.opencity.ui.components.TopBar
 import com.example.opencity.ui.components.settings.SettingsAction
@@ -26,6 +33,10 @@ import com.example.opencity.ui.components.settings.SettingsSection
 import com.example.opencity.ui.components.settings.SettingsSwitch
 import com.example.opencity.ui.components.settings.SettingsSingleFromMultiple
 import com.example.opencity.ui.components.settings.SettingsOption
+import com.example.opencity.models.DarkModeType
+import com.example.opencity.storage.AppSettings
+import com.example.opencity.storage.SettingsRepository
+import kotlinx.coroutines.launch
 
 
 enum class MapOrientation {
@@ -34,11 +45,6 @@ enum class MapOrientation {
     COMPASS
 }
 
-enum class DarkModeType {
-    LIGHT_MODE,
-    DARK_MODE,
-    AUTO
-}
 
 @Composable
 fun SettingsScreen(
@@ -52,7 +58,19 @@ fun SettingsScreen(
     onLogout: () -> Unit = {},
     onReturn: () -> Unit = {}
 ) {
-    var darkModeType by rememberSaveable { mutableStateOf(DarkModeType.AUTO) }
+    val context = LocalContext.current
+    val repository = remember(context.applicationContext) { SettingsRepository(context.applicationContext) }
+    val scope = rememberCoroutineScope()
+    val settings by produceState<AppSettings?>(initialValue = null, key1 = repository) { repository.settings.collect { value = it } }
+    val currentSettings = settings
+    if (currentSettings == null) {
+        // Loading... No one can escape the damn loading screen... Muahahahaha! (*mental sanity left chat*)
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
+        return
+    }
+    val darkModeType = currentSettings.themeMode
+    fun saveDarkModeType(mode: DarkModeType) { scope.launch { repository.setThemeMode(mode) } }
+
     var animationsEnabled by rememberSaveable { mutableStateOf(true) }
 
     var nearbyNotifications by rememberSaveable { mutableStateOf(true) }
@@ -95,7 +113,7 @@ fun SettingsScreen(
                                 )
                             ),
                             selectedValue = darkModeType,
-                            onValueSelected = { selected -> darkModeType = selected }
+                            onValueSelected = { selected -> saveDarkModeType(selected)}
                         )
 
                         SettingsDivider()

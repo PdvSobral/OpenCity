@@ -5,19 +5,17 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.opencity.models.DarkModeType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 // Declare this once at top level so the app uses one DataStore instance.
 private val Context.settingsDataStore by preferencesDataStore(name = "settings")
 
-enum class ThemeMode {
-    SYSTEM, LIGHT, DARK
-}
 
 data class AppSettings(
     val serverAddress: String = "",
-    val themeMode: ThemeMode = ThemeMode.SYSTEM,
+    val themeMode: DarkModeType = DarkModeType.AUTO,
     val notificationsEnabled: Boolean = false,
     val hapticsEnabled: Boolean = false
 )
@@ -35,9 +33,8 @@ class SettingsRepository(private val context: Context) {
         val savedTheme = prefs[SettingsKeys.THEME_MODE]
 
         AppSettings(
-            // Use SYSTEM if the setting is missing or contains an unrecognized value.
             serverAddress = prefs[SettingsKeys.SERVER_ADDRESS] ?: "",
-            themeMode = ThemeMode.entries.firstOrNull { it.name == savedTheme } ?: ThemeMode.SYSTEM,
+            themeMode = DarkModeType.entries.firstOrNull { it.name == savedTheme } ?: DarkModeType.AUTO,
             notificationsEnabled = prefs[SettingsKeys.NOTIFICATIONS_ENABLED] ?: true,
             hapticsEnabled = prefs[SettingsKeys.HAPTICS_ENABLED] ?: true
         )
@@ -49,7 +46,7 @@ class SettingsRepository(private val context: Context) {
         }
     }
 
-    suspend fun setThemeMode(mode: ThemeMode) {
+    suspend fun setThemeMode(mode: DarkModeType) {
         context.settingsDataStore.edit {
             prefs -> prefs[SettingsKeys.THEME_MODE] = mode.name
         }
