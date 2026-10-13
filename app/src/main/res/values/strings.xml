@@ -21,4 +21,7 @@
     <string name="map_screen_create_report_button_icon">Create report</string>
     <string name="map_screen_create_report_button_text">Report</string>
     <string name="bottom_bar_item_map">Map</string>
+    <string name="bottom_bar_item_report">Reports</string>
+    <string name="bottom_bar_item_notifications">Notifications</string>
+    <string name="bottom_bar_item_account">Account</string>
 </resources>

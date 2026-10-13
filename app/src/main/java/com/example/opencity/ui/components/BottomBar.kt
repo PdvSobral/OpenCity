@@ -11,6 +11,8 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import com.example.opencity.R
 
 data class BottomBarItem(
     val route: String,
@@ -24,11 +26,11 @@ fun BottomBar(
     onItemSelected: (String) -> Unit
 ) {
     val items = listOf(
-        BottomBarItem("map", "Map", Icons.Outlined.Map),
-        BottomBarItem("reports", "Reports", Icons.AutoMirrored.Outlined.Assignment),
-        BottomBarItem("notifications", "Notifications", Icons.Outlined.Notifications),
-        BottomBarItem("account", "Account", Icons.Outlined.AccountCircle),
-    )
+        BottomBarItem("map", stringResource(R.string.bottom_bar_item_map), Icons.Outlined.Map),
+        BottomBarItem("reports", stringResource(R.string.bottom_bar_item_report), Icons.AutoMirrored.Outlined.Assignment),
+        BottomBarItem("notifications",stringResource(R.string.bottom_bar_item_notifications), Icons.Outlined.Notifications),
+        BottomBarItem("account", stringResource(R.string.bottom_bar_item_account), Icons.Outlined.AccountCircle),
+        )
     NavigationBar {
         items.forEach { item ->
             NavigationBarItem(

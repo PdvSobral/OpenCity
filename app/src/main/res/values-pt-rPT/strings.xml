@@ -19,4 +19,7 @@
     <string name="map_screen_create_report_button_icon">Comunicar problema</string>
     <string name="map_screen_create_report_button_text">Reportar</string>
     <string name="bottom_bar_item_map">Mapa</string>
+    <string name="bottom_bar_item_report">Relatórios</string>
+    <string name="bottom_bar_item_notifications">Notificações</string>
+    <string name="bottom_bar_item_account">Conta</string>
 </resources>
