@@ -80,5 +80,6 @@
 
 # Requisitos Não Funcionais
  - Uso Kotlin
+ - Não usar SharedPreferences, usar Jetpack DataStore
  - Ser FOSS
  - Nome: CityPulse

@@ -1,5 +1,6 @@
 package com.example.opencity
 
+import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -24,8 +25,10 @@ import com.example.opencity.ui.screens.SettingsScreen
 
 @Composable
 fun OpenCityApp(
+    serverAddress: String,
     navController: NavHostController = rememberNavController()
 ) {
+    Log.d("OpenCityApp", "Server Address: $serverAddress")
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val currentRoute = currentDestination?.route

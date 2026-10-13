@@ -13,7 +13,9 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             OpenCityTheme {
-                OpenCityApp()
+                ServerAddressGate {
+                        serverAddress -> OpenCityApp(serverAddress = serverAddress)
+                }
             }
         }
     }
