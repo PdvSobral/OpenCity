@@ -10,7 +10,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.opencity.R
 import com.example.opencity.models.Message
 import com.example.opencity.ui.components.MessageCard
 import com.example.opencity.ui.components.TopBar
@@ -44,7 +46,7 @@ fun NotificationsScreen() {
     )
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        TopBar("Notifications", "Updates about your activity")
+        TopBar(stringResource(R.string.top_bar_notifications_title), stringResource(R.string.reports_top_bar_description))
         Column( modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp) ) {
             LazyColumn(
                 contentPadding = PaddingValues(bottom = 16.dp),
@@ -53,3 +55,4 @@ fun NotificationsScreen() {
         }
     }
 }
+

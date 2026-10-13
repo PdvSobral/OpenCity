@@ -24,4 +24,8 @@
     <string name="bottom_bar_item_report">Reports</string>
     <string name="bottom_bar_item_notifications">Notifications</string>
     <string name="bottom_bar_item_account">Account</string>
+    <string name="reports_top_bar_title">My reports</string>
+    <string name="reports_top_bar_description">Follow the status of your reports</string>
+    <string name="top_bar_notifications_title">Notifications</string>
+    <string name="top_bar_notifications_description">Updates about your activity</string>
 </resources>

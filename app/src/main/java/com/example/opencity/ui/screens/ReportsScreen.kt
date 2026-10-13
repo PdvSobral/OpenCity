@@ -9,7 +9,9 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.opencity.R
 import com.example.opencity.models.Report
 import com.example.opencity.models.ReportStatus
 import com.example.opencity.ui.components.ReportCard
@@ -48,7 +50,7 @@ fun ReportsScreen() {
     )
 
     Column(modifier = Modifier.fillMaxSize()) {
-        TopBar("My reports", "Follow the status of your reports")
+        TopBar(stringResource(R.string.reports_top_bar_title), stringResource(R.string.reports_top_bar_description))
         Column(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
             LazyColumn(
                 contentPadding = PaddingValues(bottom = 16.dp),
@@ -56,4 +58,7 @@ fun ReportsScreen() {
             ) {items(reports) { report -> ReportCard(report = report)}}
         }
     }
+
+
 }
+
