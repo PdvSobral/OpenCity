@@ -43,9 +43,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.example.opencity.R
 import com.example.opencity.models.Account
 import com.example.opencity.models.AccountRole
 import com.example.opencity.ui.components.TopBar
@@ -66,7 +68,7 @@ fun AccountScreen(
     onCreateAccount: () -> Unit = {}
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
-        TopBar("Account")
+        TopBar(stringResource(R.string.top_bar_account))
         Column(Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
             Column(
                 modifier = Modifier
@@ -78,37 +80,37 @@ fun AccountScreen(
                     account = account,
                     onEditProfile = onEditProfile
                 )
-                AccountSection(title = "Your activity") {
+                AccountSection(title = stringResource(R.string.account_section_your_activity_title)) {
                     AccountAction(
                         icon = Icons.Outlined.Star,
-                        title = "Contribution history",
-                        subtitle = "View your reports, comments, and confirmations",
+                        title = stringResource(R.string.account_section_your_activity_contribution),
+                        subtitle = stringResource(R.string.your_activity_contribution_history_subtitle),
                         onClick = onContributionHistory
                     )
                     AccountAction(
                         icon = Icons.Outlined.Download,
-                        title = "Export your data",
-                        subtitle = "Download your reports and contributions",
+                        title = stringResource(R.string.your_activity_section_export_ur_data_title),
+                        subtitle = stringResource(R.string.ur_activity_section_export_ur_data_subtitle),
                         onClick = onExportData
                     )
                 }
-                AccountSection(title = "Account settings") {
+                AccountSection(title = stringResource(R.string.account_section_account_settings)) {
                     AccountAction(
                         icon = Icons.Outlined.Notifications,
-                        title = "Notifications",
-                        subtitle = "Manage report and activity notifications",
+                        title = stringResource(R.string.account_settings_notifications_title),
+                        subtitle = stringResource(R.string.account_settings_notifications_subtitle), // nao sei como fica melhor... "Faça a gestão das notificações de relatórios e de atividade" ou ... "Gerir notificações de relatórios e de atividade"
                         onClick = onNotificationSettings
                     )
                     AccountAction(
                         icon = Icons.Outlined.Lock,
-                        title = "Security",
-                        subtitle = "Manage your password and login methods",
+                        title = stringResource(R.string.account_settings_security_title),
+                        subtitle = stringResource(R.string.account_settings_security_subtitle),  // nao sei como fica melhor... "Faça a gestão da sua palavra-passe e métodos de início de sessão" ou ... "Gerir a sua palavra-passe e métodos de início de sessão"
                         onClick = onSecuritySettings
                     )
                     AccountAction(
                         icon = Icons.Outlined.Settings,
-                        title = "Application settings",
-                        subtitle = "Theme, map, offline data, and preferences",
+                        title = stringResource(R.string.account_settings_application_settings_title),
+                        subtitle = stringResource(R.string.account_settings_application_settings_subtitle),
                         onClick = onAppSettings
                     )
                 }
@@ -122,11 +124,11 @@ fun AccountScreen(
                         )
                     }
                 }
-                AccountSection(title = "Other") {
+                AccountSection(title = stringResource(R.string.account_section_other_section)) {
                     AccountAction(
                         icon = Icons.Outlined.Info,
-                        title = "About OpenCity",
-                        subtitle = "Terms of use, licenses, and project information",
+                        title = stringResource(R.string.account_section_other_title),
+                        subtitle = stringResource(R.string.account_section_other_subtitle),
                         onClick = onAbout
                     )
                 }
