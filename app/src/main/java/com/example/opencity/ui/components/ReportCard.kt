@@ -25,6 +25,7 @@ fun ReportCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
+    // TODO: a pôr no mesmo sítio do que o ReportStatus, tal como atualizá-lo
     val statusText = when (report.status) {
         ReportStatus.OPEN -> "Open"
         ReportStatus.IN_PROGRESS -> "In progress"

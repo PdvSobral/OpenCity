@@ -10,6 +10,7 @@ data class Report(
     val date: String
 )
 
+// TODO: adicionar reported e remover open
 enum class ReportStatus {
     OPEN,
     IN_PROGRESS,
