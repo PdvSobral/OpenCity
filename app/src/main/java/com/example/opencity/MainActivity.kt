@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.example.opencity.models.DarkModeType
+import com.example.opencity.models.enums.DarkModeType
 import com.example.opencity.storage.AppSettings
 import com.example.opencity.ui.screens.ServerAddressGate
 import com.example.opencity.ui.theme.OpenCityTheme

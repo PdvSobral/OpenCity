@@ -67,7 +67,11 @@ fun OpenCityApp(
                     ),*/
                     onAppSettings = { navController.navigate("account_appsettings")})
                 }
-                composable("account_appsettings") { SettingsScreen(onReturn = { navController.popBackStack() } ) }
+                composable("account_appsettings") {
+                    SettingsScreen(
+                        onReturn = { navController.popBackStack() },
+                    )
+                }
             }
         }
     }

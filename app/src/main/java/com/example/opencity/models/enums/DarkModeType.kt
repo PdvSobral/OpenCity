@@ -1,4 +1,4 @@
-package com.example.opencity.models
+package com.example.opencity.models.enums
 
 import androidx.appcompat.app.AppCompatDelegate
 

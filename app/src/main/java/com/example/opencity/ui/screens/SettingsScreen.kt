@@ -5,15 +5,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ListItem
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,29 +27,18 @@ import com.example.opencity.ui.components.settings.SettingsSection
 import com.example.opencity.ui.components.settings.SettingsSwitch
 import com.example.opencity.ui.components.settings.SettingsSingleFromMultiple
 import com.example.opencity.ui.components.settings.SettingsOption
-import com.example.opencity.models.DarkModeType
+import com.example.opencity.models.enums.DarkModeType
+import com.example.opencity.models.enums.MapOrientationMode
 import com.example.opencity.storage.AppSettings
 import com.example.opencity.storage.SettingsRepository
 import kotlinx.coroutines.launch
 
 
-enum class MapOrientation {
-    NORTH_UP,
-    MANUAL_ROTATION,
-    COMPASS
-}
-
-
 @Composable
 fun SettingsScreen(
-    isLoggedIn: Boolean = false,
     onManageMarkers: () -> Unit = {},
     onOfflineMaps: () -> Unit = {},
     onAccountSettings: () -> Unit = {},
-    onContributionHistory: () -> Unit = {},
-    onServerConfiguration: () -> Unit = {},
-    onExportData: () -> Unit = {},
-    onLogout: () -> Unit = {},
     onReturn: () -> Unit = {}
 ) {
     val context = LocalContext.current
@@ -78,10 +61,16 @@ fun SettingsScreen(
     var commentNotifications by rememberSaveable { mutableStateOf(true) }
     var highSeverityNotifications by rememberSaveable { mutableStateOf(false) }
 
-    var mapOrientation by rememberSaveable { mutableStateOf(MapOrientation.NORTH_UP) }
+    val mapOrientation = currentSettings.mapOrientationMode
+    fun saveMapOrientationMode(mode: MapOrientationMode) { scope.launch { repository.setMapOrientationMode(mode) } }
 
     var heatmapEnabled by rememberSaveable { mutableStateOf(false) }
     var pathTracingEnabled by rememberSaveable { mutableStateOf(false) }
+
+    fun onServerConfiguration() {
+        // TODO: make confirmation that the user will be logged out. local markers will not be lost.
+        scope.launch { repository.setServerAddress("") }
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopBar("Settings", "Customize your OpenCity experience", true, onReturn)
@@ -172,23 +161,23 @@ fun SettingsScreen(
                             description = "Choose how the map should rotate",
                             options = listOf(
                                 SettingsOption(
-                                    value = MapOrientation.NORTH_UP,
+                                    value = MapOrientationMode.NORTH_UP,
                                     title = "North up",
                                     description = "Keep north at the top of the map"
                                 ),
                                 SettingsOption(
-                                    value = MapOrientation.MANUAL_ROTATION,
+                                    value = MapOrientationMode.MANUAL_ROTATION,
                                     title = "Manual rotation",
                                     description = "Allow for free manual rotattion of the map"
                                 ),
                                 SettingsOption(
-                                    value = MapOrientation.COMPASS,
+                                    value = MapOrientationMode.COMPASS,
                                     title = "Compass",
                                     description = "Rotate the map according to the device's internal compass"
                                 )
                             ),
                             selectedValue = mapOrientation,
-                            onValueSelected = { selected -> mapOrientation = selected }
+                            onValueSelected = { selected -> saveMapOrientationMode(selected) }
                         )
 
                         SettingsDivider()
@@ -226,79 +215,13 @@ fun SettingsScreen(
                         )
                     }
                 }
-
-                item {
-                    SettingsSection(title = "Account") {
-                        if (isLoggedIn) {
-                            SettingsAction(
-                                title = "Account settings",
-                                description = "Manage your profile and login information",
-                                buttonText = "Open",
-                                onClick = onAccountSettings
-                            )
-
-                            SettingsDivider()
-
-                            SettingsAction(
-                                title = "Contribution history",
-                                description = "View your reports, comments, and points",
-                                buttonText = "View",
-                                onClick = onContributionHistory
-                            )
-
-                            SettingsDivider()
-
-                            SettingsAction(
-                                title = "Export contributions",
-                                description = "Export your reports and activity as CSV or JSON",
-                                buttonText = "Export",
-                                onClick = onExportData
-                            )
-
-                            SettingsDivider()
-
-                            TextButton(
-                                onClick = onLogout,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(horizontal = 8.dp)
-                            ) {
-                                Text(
-                                    text = "Log out",
-                                    color = MaterialTheme.colorScheme.error
-                                )
-                            }
-                        } else {
-                            ListItem(
-                                headlineContent = {
-                                    Text("Anonymous access")
-                                },
-                                supportingContent = {
-                                    Text(
-                                        "You can view public reports, but account features are unavailable."
-                                    )
-                                }
-                            )
-
-                            Button(
-                                onClick = onAccountSettings,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp)
-                            ) {
-                                Text("Create an account")
-                            }
-                        }
-                    }
-                }
-
                 item {
                     SettingsSection(title = "Server") {
                         SettingsAction(
-                            title = "Server configuration",
+                            title = "Change Server",
                             description = "Change the OpenCity server connection",
                             buttonText = "Configure",
-                            onClick = onServerConfiguration
+                            onClick = { onServerConfiguration() }
                         )
                     }
                 }
