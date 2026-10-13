@@ -1,4 +1,4 @@
-package com.example.opencity
+package com.example.opencity.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -17,12 +17,13 @@ import androidx.core.net.toUri
 import com.example.opencity.storage.SettingsRepository
 import com.example.opencity.storage.AppSettings
 import kotlinx.coroutines.launch
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
-import androidx.core.os.LocaleListCompat
+import com.example.opencity.R
+import com.example.opencity.models.LanguageOption
+import com.example.opencity.ui.components.LanguageSelectorButton
 
 
 @Composable
@@ -71,13 +72,20 @@ fun ServerAddressGate(content: @Composable (String) -> Unit) {
             ),
         contentAlignment = Alignment.Center
     ) {
+        LanguageSelectorButton(
+            languages = listOf(
+                LanguageOption("System Default", null, null),
+                LanguageOption("English", R.drawable.flag_en, "en"),
+                LanguageOption("Português", R.drawable.flag_pt_pt, "pt-PT")
+            ),
+            modifier = Modifier.align(Alignment.TopEnd).statusBarsPadding().padding(16.dp)
+        )
         Card(
             modifier = Modifier.fillMaxWidth().widthIn(max = 1000.dp).padding(24.dp),
             shape = RoundedCornerShape(24.dp),
             elevation = CardDefaults.cardElevation(0.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
-            LanguageSelector()
             Column(
                 modifier = Modifier.padding(24.dp),
                 verticalArrangement = Arrangement.spacedBy(24.dp)
@@ -108,7 +116,8 @@ fun ServerAddressGate(content: @Composable (String) -> Unit) {
             title = { Text(stringResource(R.string.http_dialog_title)) },
             text = { Text(stringResource(R.string.http_dialog_message)) },
             confirmButton = { Button(onClick = { saveAddress(address) }) { Text(stringResource(R.string.continue_with_http)) } },
-            dismissButton = { TextButton(onClick = { pendingHttpAddress = null }) { Text(stringResource(R.string.go_back)) } }
+            dismissButton = { TextButton(onClick = { pendingHttpAddress = null }) { Text(stringResource(
+                R.string.go_back)) } }
         )
     }
 }
@@ -155,32 +164,8 @@ private fun AddressForm(
             placeholder = { Text(stringResource(R.string.server_address_placeholder)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
             isError = error != null,
-            supportingText = error?.let { message ->
-                { Text(message) }
-            }
+            supportingText = error?.let { message -> { Text(message) } }
         )
         Button(onClick = onContinue, modifier = Modifier.fillMaxWidth()) { Text("Continue") }
     }
-}
-
-
-@Composable
-fun LanguageSelector() {
-    // Retrieve the currently configured app locale.
-    // If no app-specific locale is set, LocaleListCompat.get(0) returns null,
-    // so we safely fall back to a default (e.g., "en").
-    val appLocales = AppCompatDelegate.getApplicationLocales()
-    val currentLocaleTag = appLocales.get(0)?.toLanguageTag() ?: "en"
-
-    // Example UI: A button to toggle between English and Portuguese
-    Button(
-        onClick = {
-            val newLanguageTag = if (currentLocaleTag == "en") "pt-PT" else "en"
-            val localeList = LocaleListCompat.forLanguageTags(newLanguageTag)
-
-            // Setting the locale re-creates the Activity by default,
-            // which automatically applies the new configuration to Compose.
-            AppCompatDelegate.setApplicationLocales(localeList)
-        }
-    ) { Text(text = if (currentLocaleTag == "en") "Switch to Portuguese" else "Mudar para Inglês") }
 }

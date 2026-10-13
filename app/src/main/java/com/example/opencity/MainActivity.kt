@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.example.opencity.ui.screens.ServerAddressGate
 import com.example.opencity.ui.theme.OpenCityTheme
 
 class MainActivity : AppCompatActivity() {
@@ -13,8 +14,8 @@ class MainActivity : AppCompatActivity() {
 
         setContent {
             OpenCityTheme {
-                ServerAddressGate {
-                        serverAddress -> OpenCityApp(serverAddress = serverAddress)
+                ServerAddressGate { serverAddress ->
+                    OpenCityApp(serverAddress = serverAddress)
                 }
             }
         }
