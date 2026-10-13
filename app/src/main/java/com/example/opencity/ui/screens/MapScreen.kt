@@ -26,7 +26,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.opencity.R
 import com.example.opencity.ui.components.TopBar
 import com.example.opencity.ui.components.map.CompassIcon
 
@@ -34,12 +36,12 @@ import com.example.opencity.ui.components.map.CompassIcon
 fun MapScreen(onCreateReport: () -> Unit) {
     Column(modifier = Modifier.fillMaxSize().padding(all = 0.dp)) {
         Row(modifier = Modifier.fillMaxWidth().padding(all = 0.dp)) {
-            TopBar("OpenCity", "What is happening in your city?")
+            TopBar("OpenCity", stringResource(R.string.map_screen_topbar_description))
         }
         Box(
             modifier = Modifier.weight(1f).fillMaxWidth()) {
             Text(
-                text = "Map preview",
+                text = stringResource(id=R.string.map_preview_mainpage),
                 modifier = Modifier.align(Alignment.Center),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -90,15 +92,15 @@ fun MapScreen(onCreateReport: () -> Unit) {
 @Composable
 private fun TopRightColumnContent(onReportButtonClick: () -> Unit) {
     OutlinedButton(
-        modifier = Modifier.size(height = 40.dp, width = 122.dp),
+        modifier = Modifier.size(height = 40.dp, width = 135.dp), //TODO: a ver tamanho, possivelmente dinâmico
         onClick = onReportButtonClick
     ) {
         Icon(
             imageVector = Icons.Default.Report,
-            contentDescription = "Create report"
+            contentDescription = stringResource(id=R.string.map_screen_create_report_button_icon)
         )
         Text(
-            text = "Report",
+            text = stringResource(id=R.string.map_screen_create_report_button_text),
             modifier = Modifier.padding(all = 0.dp)
         )
     }

@@ -14,4 +14,9 @@
     <string name="continue_button">Continuar</string>
     <string name="security_note">Para uma conecção segura, use um endereço que comece com https://. HTTP é desencriptado e não é recomendado.</string>
     <string name="server_address">Endereço do servidor</string>
+    <string name="map_screen_topbar_description">O que está a acontecer na sua cidade?</string>
+    <string name="map_preview_mainpage">Pré-visualização do mapa</string>
+    <string name="map_screen_create_report_button_icon">Comunicar problema</string>
+    <string name="map_screen_create_report_button_text">Reportar</string>
+    <string name="bottom_bar_item_map">Mapa</string>
 </resources>

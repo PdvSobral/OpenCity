@@ -16,4 +16,9 @@
     <string name="http_dialog_message">This address uses HTTP, which does not encrypt traffic.\nYour connection may be observed or altered. Use HTTPS if the server supports it.</string>
     <string name="continue_with_http">Continue with HTTP</string>
     <string name="go_back">Go back</string>
+    <string name="map_screen_topbar_description">What is happening in your city?</string>
+    <string name="map_preview_mainpage">Map preview</string>
+    <string name="map_screen_create_report_button_icon">Create report</string>
+    <string name="map_screen_create_report_button_text">Report</string>
+    <string name="bottom_bar_item_map">Map</string>
 </resources>
