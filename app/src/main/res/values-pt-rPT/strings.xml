@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="language_english">Inglês</string>
+    <string name="language_portuguese">Portugês</string>
+    <string name="http_dialog_title">Usar conecção insegura?</string>
+    <string name="http_dialog_message">Este endereço usa HTTP, o qual não encripta os seus dados. A sua conecção pode ser observada ou alterada. Use HTTPS se o servidor o suportar.</string>
+    <string name="continue_with_http">Continuar com HTTP</string>
+    <string name="go_back">Voltar atrás</string>
+    <string name="connect_title">Conectar ao servidor</string>
+    <string name="connect_instructions">Introduza o endereço do servidor ao qual conectar.</string>
+    <string name="server_address_placeholder">https://exemplo.com</string>
+    <string name="invalid_server_address">Introduza um URL válido, incluindo o https:// ou http://.</string>
+    <string name="continue_button">Continuar</string>
+    <string name="security_note">Para uma conecção segura, use um endereço que comece com https://. HTTP é desencriptado e não é recomendado.</string>
+    <string name="server_address">Endereço do servidor</string>
+</resources>

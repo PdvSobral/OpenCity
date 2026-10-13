@@ -17,8 +17,14 @@ import androidx.core.net.toUri
 import com.example.opencity.storage.SettingsRepository
 import com.example.opencity.storage.AppSettings
 import kotlinx.coroutines.launch
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.material3.Button
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.res.stringResource
+import androidx.core.os.LocaleListCompat
 
-// TODO: Add a language toggle/list (and translations, obviously)
+
 @Composable
 fun ServerAddressGate(content: @Composable (String) -> Unit) {
     val context = LocalContext.current
@@ -71,25 +77,24 @@ fun ServerAddressGate(content: @Composable (String) -> Unit) {
             elevation = CardDefaults.cardElevation(0.dp),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
         ) {
+            LanguageSelector()
             Column(
                 modifier = Modifier.padding(24.dp),
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
                 Instructions()
                 HorizontalDivider()
+                val errorStr = stringResource(R.string.invalid_server_address)
                 AddressForm(
                     input = input,
                     error = error,
-                    onInputChange = {
-                        input = it
-                        error = null
-                    },
+                    onInputChange = { input = it; error = null },
                     onContinue = {
                         val address = input.trim()
                         val uri = address.toUri()
                         val scheme = uri.scheme?.lowercase()
                         if (scheme !in listOf("http", "https") || uri.host.isNullOrBlank()
-                        ) { error = "Enter a valid URL, including https:// or http://." }
+                        ) { error = errorStr }
                         else if (scheme == "http") { pendingHttpAddress = address }
                         else { saveAddress(address) }
                     }
@@ -100,31 +105,28 @@ fun ServerAddressGate(content: @Composable (String) -> Unit) {
     pendingHttpAddress?.let { address ->
         AlertDialog(
             onDismissRequest = { pendingHttpAddress = null },
-            title = { Text("Use an insecure connection?") },
-            text = { Text("This address uses HTTP, which does not encrypt traffic.\nYour connection may be observed or altered. Use HTTPS if the server supports it.") },
-            confirmButton = { Button(onClick = { saveAddress(address) }) { Text("Continue with HTTP") } },
-            dismissButton = { TextButton(onClick = { pendingHttpAddress = null }) { Text("Go back") } }
+            title = { Text(stringResource(R.string.http_dialog_title)) },
+            text = { Text(stringResource(R.string.http_dialog_message)) },
+            confirmButton = { Button(onClick = { saveAddress(address) }) { Text(stringResource(R.string.continue_with_http)) } },
+            dismissButton = { TextButton(onClick = { pendingHttpAddress = null }) { Text(stringResource(R.string.go_back)) } }
         )
     }
 }
 
 @Composable
 private fun Instructions(modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(
-            text = "Connect to your server",
+            text = stringResource(R.string.connect_title),
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
         Text(
-            text = "Enter the address of the server you want to connect to.\nYou can usually get this address from your organization or server administrator.",
+            text = stringResource(R.string.connect_instructions),
             style = MaterialTheme.typography.bodyLarge
         )
         Text(
-            text = "For a secure connection, use an address beginning with https://.\nHTTP is unencrypted and is not recommended.",
+            text = stringResource(R.string.security_note),
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.error
         )
@@ -139,32 +141,46 @@ private fun AddressForm(
     onContinue: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(12.dp)
-    ) {
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(12.dp)) {
         Text(
-            text = "Server address",
+            text = stringResource(R.string.server_address),
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold
         )
-
         OutlinedTextField(
             value = input,
             onValueChange = onInputChange,
             modifier = Modifier.fillMaxWidth(),
             singleLine = true,
-            placeholder = { Text("https://example.com") },
+            placeholder = { Text(stringResource(R.string.server_address_placeholder)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
             isError = error != null,
             supportingText = error?.let { message ->
                 { Text(message) }
             }
         )
-
-        Button(
-            onClick = onContinue,
-            modifier = Modifier.fillMaxWidth()
-        ) { Text("Continue") }
+        Button(onClick = onContinue, modifier = Modifier.fillMaxWidth()) { Text("Continue") }
     }
+}
+
+
+@Composable
+fun LanguageSelector() {
+    // Retrieve the currently configured app locale.
+    // If no app-specific locale is set, LocaleListCompat.get(0) returns null,
+    // so we safely fall back to a default (e.g., "en").
+    val appLocales = AppCompatDelegate.getApplicationLocales()
+    val currentLocaleTag = appLocales.get(0)?.toLanguageTag() ?: "en"
+
+    // Example UI: A button to toggle between English and Portuguese
+    Button(
+        onClick = {
+            val newLanguageTag = if (currentLocaleTag == "en") "pt-PT" else "en"
+            val localeList = LocaleListCompat.forLanguageTags(newLanguageTag)
+
+            // Setting the locale re-creates the Activity by default,
+            // which automatically applies the new configuration to Compose.
+            AppCompatDelegate.setApplicationLocales(localeList)
+        }
+    ) { Text(text = if (currentLocaleTag == "en") "Switch to Portuguese" else "Mudar para Inglês") }
 }

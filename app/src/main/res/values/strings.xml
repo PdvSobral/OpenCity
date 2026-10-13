@@ -1,3 +1,19 @@
 <resources>
-    <string name="app_name">OpenCity</string>
+    <string name="app_name" translatable="false">OpenCity</string>
+
+    <!-- Server Address Gate -->
+    <string name="language_english">English</string>
+    <string name="language_portuguese">Portuguese</string>
+
+    <string name="connect_title">Connect to a server</string>
+    <string name="connect_instructions">Enter the address of the server you want to connect to.</string>
+    <string name="security_note">For a secure connection, use an address beginning with https://.\nHTTP is unencrypted and is not recommended.</string>
+    <string name="server_address">Server address</string>
+    <string name="server_address_placeholder">https://example.com</string>
+    <string name="invalid_server_address">Enter a valid URL, including https:// or http://.</string>
+    <string name="continue_button">Continue</string>
+    <string name="http_dialog_title">Use an insecure connection?</string>
+    <string name="http_dialog_message">This address uses HTTP, which does not encrypt traffic.\nYour connection may be observed or altered. Use HTTPS if the server supports it.</string>
+    <string name="continue_with_http">Continue with HTTP</string>
+    <string name="go_back">Go back</string>
 </resources>
