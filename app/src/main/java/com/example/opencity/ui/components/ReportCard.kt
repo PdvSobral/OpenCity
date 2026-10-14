@@ -17,7 +17,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.opencity.models.Report
-import com.example.opencity.models.ReportStatus
+import com.example.opencity.models.toColourValue
+import com.example.opencity.models.toStringValue
 
 @Composable
 fun ReportCard(
@@ -25,18 +26,8 @@ fun ReportCard(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {}
 ) {
-    // TODO: a pôr no mesmo sítio do que o ReportStatus, tal como atualizá-lo
-    val statusText = when (report.status) {
-        ReportStatus.OPEN -> "Open"
-        ReportStatus.IN_PROGRESS -> "In progress"
-        ReportStatus.RESOLVED -> "Resolved"
-    }
-
-    val statusColor = when (report.status) {
-        ReportStatus.OPEN -> MaterialTheme.colorScheme.error
-        ReportStatus.IN_PROGRESS -> MaterialTheme.colorScheme.primary
-        ReportStatus.RESOLVED -> MaterialTheme.colorScheme.tertiary
-    }
+    val statusText = report.status.toStringValue()
+    val statusColor = report.status.toColourValue()
 
     Card(
         modifier = modifier.fillMaxWidth(),

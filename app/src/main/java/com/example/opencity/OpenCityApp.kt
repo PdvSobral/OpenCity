@@ -18,8 +18,6 @@ import com.example.opencity.ui.screens.NotificationsScreen
 import com.example.opencity.ui.screens.ReportsScreen
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.Column
-import com.example.opencity.models.Account
-import com.example.opencity.models.AccountRole
 import com.example.opencity.ui.screens.SettingsScreen
 
 

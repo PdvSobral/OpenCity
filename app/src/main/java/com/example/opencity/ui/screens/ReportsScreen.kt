@@ -26,7 +26,7 @@ fun ReportsScreen() {
             category = "Public lighting",
             description = "The streetlight has not been working for several days.",
             address = "Main Avenue, 120",
-            status = ReportStatus.IN_PROGRESS,
+            status = ReportStatus.REPORTED,
             date = "Today"
         ),
         Report(
@@ -35,7 +35,7 @@ fun ReportsScreen() {
             category = "Roads",
             description = "Large pothole causing difficulty for cars and bicycles.",
             address = "Central Street, 45",
-            status = ReportStatus.OPEN,
+            status = ReportStatus.IN_RESOLUTION,
             date = "Yesterday"
         ),
         Report(

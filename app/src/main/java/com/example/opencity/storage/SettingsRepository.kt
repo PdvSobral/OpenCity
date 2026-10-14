@@ -1,6 +1,7 @@
 package com.example.opencity.storage
 
 import android.content.Context
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -16,16 +17,16 @@ private val Context.settingsDataStore by preferencesDataStore(name = "settings")
 
 data class AppSettings(
     val serverAddress: String = "",
-    val themeMode: DarkModeType = DarkModeType.AUTO,
     val notificationsEnabled: Boolean = false,
+    val themeMode: DarkModeType = DarkModeType.AUTO,
     val mapOrientationMode: MapOrientationMode = MapOrientationMode.NORTH_UP
 )
 
-private object SettingsKeys {
-    val MAP_ORIENTATION_MODE = stringPreferencesKey("map_orientation_mode")
+object SettingsKeys {
     val SERVER_ADDRESS = stringPreferencesKey("server_address")
-    val THEME_MODE = stringPreferencesKey("theme_mode")
     val NOTIFICATIONS_ENABLED = booleanPreferencesKey("notifications_enabled")
+    val THEME_MODE = stringPreferencesKey("theme_mode")
+    val MAP_ORIENTATION_MODE = stringPreferencesKey("map_orientation_mode")
 }
 
 class SettingsRepository(private val context: Context) {
@@ -33,33 +34,20 @@ class SettingsRepository(private val context: Context) {
     val settings: Flow<AppSettings> = context.settingsDataStore.data.map { prefs ->
         AppSettings(
             serverAddress = prefs[SettingsKeys.SERVER_ADDRESS] ?: "",
+            notificationsEnabled = prefs[SettingsKeys.NOTIFICATIONS_ENABLED] ?: false,
             themeMode = DarkModeType.entries.firstOrNull { it.name == prefs[SettingsKeys.THEME_MODE] } ?: DarkModeType.AUTO,
             mapOrientationMode = MapOrientationMode.entries.firstOrNull { it.name == prefs[SettingsKeys.MAP_ORIENTATION_MODE] } ?: MapOrientationMode.NORTH_UP,
-            notificationsEnabled = prefs[SettingsKeys.NOTIFICATIONS_ENABLED] ?: true,
         )
     }
 
-    suspend fun setServerAddress(addr: String) {
-        context.settingsDataStore.edit {
-            prefs -> prefs[SettingsKeys.SERVER_ADDRESS] = addr
-        }
+    suspend fun <T> setSettingValue(key: Preferences.Key<T>, value: T) {
+        context.settingsDataStore.edit { prefs -> prefs[key] = value }
     }
-
-    suspend fun setThemeMode(mode: DarkModeType) {
-        context.settingsDataStore.edit {
-            prefs -> prefs[SettingsKeys.THEME_MODE] = mode.name
-        }
+    // Values that are not one of the basic types need overloads
+    suspend fun setSettingValue(key: Preferences.Key<String>, value: DarkModeType) {
+        context.settingsDataStore.edit { prefs -> prefs[key] = value.name }
     }
-
-    suspend fun setMapOrientationMode(mode: MapOrientationMode) {
-        context.settingsDataStore.edit {
-                prefs -> prefs[SettingsKeys.MAP_ORIENTATION_MODE] = mode.name
-        }
-    }
-
-    suspend fun setNotificationsEnabled(enabled: Boolean) {
-        context.settingsDataStore.edit { prefs ->
-            prefs[SettingsKeys.NOTIFICATIONS_ENABLED] = enabled
-        }
+    suspend fun setSettingValue(key: Preferences.Key<String>, value: MapOrientationMode) {
+        context.settingsDataStore.edit { prefs -> prefs[key] = value.name }
     }
 }

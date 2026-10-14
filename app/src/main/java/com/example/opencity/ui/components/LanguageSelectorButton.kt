@@ -29,7 +29,6 @@ fun LanguageSelectorButton(
     // so we safely fall back to a default (e.g., "en").
     val currentLocaleTag = AppCompatDelegate.getApplicationLocales().get(0)?.toLanguageTag()
     // Compare to options. if not found, fallback to first, which should be system default.
-    // TODO: test what happens if the device is in a non-translated language and system language is selected, has to fallback to english
     val selectedLanguage = languages.firstOrNull { option ->
         val languageCode = option.languageCode
         if (currentLocaleTag.isNullOrBlank()) { languageCode == null }

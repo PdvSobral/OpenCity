@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.example.opencity.R
 import com.example.opencity.models.LanguageOption
+import com.example.opencity.storage.SettingsKeys
 import com.example.opencity.ui.components.LanguageSelectorButton
 
 
@@ -52,7 +53,7 @@ fun ServerAddressGate(content: @Composable (String) -> Unit) {
     var pendingHttpAddress by remember { mutableStateOf<String?>(null) }
 
     fun saveAddress(address: String) {
-        scope.launch { repository.setServerAddress(address) }
+        scope.launch { repository.setSettingValue(SettingsKeys.SERVER_ADDRESS, address); }
         pendingHttpAddress = null
     }
 

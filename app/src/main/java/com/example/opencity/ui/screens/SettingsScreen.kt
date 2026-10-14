@@ -4,10 +4,18 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.example.opencity.ui.components.TopBar
 import com.example.opencity.ui.components.settings.SettingsAction
 import com.example.opencity.ui.components.settings.SettingsDivider
@@ -30,6 +39,7 @@ import com.example.opencity.ui.components.settings.SettingsOption
 import com.example.opencity.models.enums.DarkModeType
 import com.example.opencity.models.enums.MapOrientationMode
 import com.example.opencity.storage.AppSettings
+import com.example.opencity.storage.SettingsKeys
 import com.example.opencity.storage.SettingsRepository
 import kotlinx.coroutines.launch
 
@@ -47,12 +57,11 @@ fun SettingsScreen(
     val settings by produceState<AppSettings?>(initialValue = null, key1 = repository) { repository.settings.collect { value = it } }
     val currentSettings = settings
     if (currentSettings == null) {
-        // Loading... No one can escape the damn loading screen... Muahahahaha! (*mental sanity left chat*)
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
         return
     }
     val darkModeType = currentSettings.themeMode
-    fun saveDarkModeType(mode: DarkModeType) { scope.launch { repository.setThemeMode(mode) } }
+    fun saveDarkModeType(mode: DarkModeType) { scope.launch { repository.setSettingValue(SettingsKeys.THEME_MODE, mode); } }
 
     var animationsEnabled by rememberSaveable { mutableStateOf(true) }
 
@@ -62,14 +71,49 @@ fun SettingsScreen(
     var highSeverityNotifications by rememberSaveable { mutableStateOf(false) }
 
     val mapOrientation = currentSettings.mapOrientationMode
-    fun saveMapOrientationMode(mode: MapOrientationMode) { scope.launch { repository.setMapOrientationMode(mode) } }
+    fun saveMapOrientationMode(mode: MapOrientationMode) { scope.launch { repository.setSettingValue(SettingsKeys.MAP_ORIENTATION_MODE, mode) } }
 
     var heatmapEnabled by rememberSaveable { mutableStateOf(false) }
     var pathTracingEnabled by rememberSaveable { mutableStateOf(false) }
 
+    var showConfirmation by remember { mutableStateOf(false) }
     fun onServerConfiguration() {
-        // TODO: make confirmation that the user will be logged out. local markers will not be lost.
-        scope.launch { repository.setServerAddress("") }
+        showConfirmation = true
+    }
+
+    // Composable for onServerConfiguration
+    if (showConfirmation) {
+        Dialog(onDismissRequest = { showConfirmation = false }) {
+            Surface(
+                shape = MaterialTheme.shapes.extraLarge,
+                tonalElevation = 6.dp
+            ) {
+                Column(Modifier.padding(24.dp)) {
+                    Text("Change server?", style = MaterialTheme.typography.titleLarge)
+                    Spacer(Modifier.height(16.dp))
+                    Text("You will be logged out. Your local markers will not be lost.")
+
+                    Spacer(Modifier.height(24.dp))
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        TextButton(onClick = { showConfirmation = false }) {
+                            Text("Cancel")
+                        }
+                        TextButton(
+                            onClick = {
+                                showConfirmation = false
+                                // TODO: call onLogOut()
+                                scope.launch { repository.setSettingValue(SettingsKeys.SERVER_ADDRESS, ""); }
+                            }
+                        ) {
+                            Text("Continue")
+                        }
+                    }
+                }
+            }
+        }
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
@@ -104,9 +148,7 @@ fun SettingsScreen(
                             selectedValue = darkModeType,
                             onValueSelected = { selected -> saveDarkModeType(selected)}
                         )
-
                         SettingsDivider()
-
                         SettingsSwitch(
                             title = "Animations",
                             description = "Enable transitions and interface animations.\nMight decrease performance.",
@@ -115,7 +157,6 @@ fun SettingsScreen(
                         )
                     }
                 }
-
                 item {
                     SettingsSection(title = "Notifications") {
                         SettingsSwitch(
@@ -124,27 +165,21 @@ fun SettingsScreen(
                             checked = nearbyNotifications,
                             onCheckedChange = { nearbyNotifications = it }
                         )
-
                         SettingsDivider()
-
                         SettingsSwitch(
                             title = "Report updates",
                             description = "Notify me when a report changes status",
                             checked = reportUpdates,
                             onCheckedChange = { reportUpdates = it }
                         )
-
                         SettingsDivider()
-
                         SettingsSwitch(
                             title = "Comments",
                             description = "Notify me when someone comments on my reports",
                             checked = commentNotifications,
                             onCheckedChange = { commentNotifications = it }
                         )
-
                         SettingsDivider()
-
                         SettingsSwitch(
                             title = "High-severity reports",
                             description = "Notify me about urgent problems in my area",
@@ -153,7 +188,6 @@ fun SettingsScreen(
                         )
                     }
                 }
-
                 item {
                     SettingsSection(title = "Map") {
                         SettingsSingleFromMultiple(
@@ -179,34 +213,27 @@ fun SettingsScreen(
                             selectedValue = mapOrientation,
                             onValueSelected = { selected -> saveMapOrientationMode(selected) }
                         )
-
                         SettingsDivider()
-
                         SettingsSwitch(
                             title = "Heatmap",
                             description = "Show areas with a high concentration of reports",
                             checked = heatmapEnabled,
                             onCheckedChange = { heatmapEnabled = it }
                         )
-
                         SettingsDivider()
-
                         SettingsSwitch(
                             title = "Path tracing",
                             description = "Show paths and routes on the map",
                             checked = pathTracingEnabled,
                             onCheckedChange = { pathTracingEnabled = it }
                         )
-
                         SettingsDivider()
-
                         SettingsAction(
                             title = "Offline maps",
                             description = "Download and manage offline map areas",
                             buttonText = "Manage",
                             onClick = onOfflineMaps
                         )
-
                         SettingsAction(
                             title = "Custom markers",
                             description = "Create and manage your map markers",
@@ -225,7 +252,6 @@ fun SettingsScreen(
                         )
                     }
                 }
-
                 item {
                     SettingsSection(title = "Privacy and data") {
                         SettingsAction(

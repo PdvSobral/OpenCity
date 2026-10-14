@@ -42,7 +42,7 @@ fun TopBar(
                 )
             }
         }
-        Column () {
+        Column {
             if (description != null) {
                 Text(
                     text = tittle,
