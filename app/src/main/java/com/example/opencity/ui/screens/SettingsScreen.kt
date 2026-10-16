@@ -27,7 +27,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.opencity.R
 import androidx.compose.ui.window.Dialog
 import com.example.opencity.ui.components.TopBar
 import com.example.opencity.ui.components.settings.SettingsAction
@@ -117,79 +119,78 @@ fun SettingsScreen(
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        TopBar("Settings", "Customize your OpenCity experience", true, onReturn)
+        TopBar(tittle = stringResource(R.string.settings_screen_top_bar_title), stringResource(R.string.settings_screen_top_bar_description), true, onReturn)
         Column(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
             LazyColumn(
                 contentPadding = PaddingValues(bottom = 24.dp),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 item {
-                    SettingsSection(title = "Appearance") {
+                    SettingsSection(title = stringResource(R.string.settings_screen_appearance_section)) {
                         SettingsSingleFromMultiple(
-                            title = "Interface mode",
-                            description = "Choose the appearance style of the app",
+                            title = stringResource(R.string.settings_screen_interface_mode_title),
+                            description = stringResource(R.string.settings_screen_interface_mode_description),
                             options = listOf(
                                 SettingsOption(
                                     value = DarkModeType.AUTO,
-                                    title = "Automatic",
-                                    description = "Follow system's mode"
+                                    title = stringResource(R.string.settings_screen_interface_automatic_title),
+                                    description = stringResource(R.string.settings_screen_interface_automatic_description)
                                 ),
                                 SettingsOption(
                                     value = DarkModeType.LIGHT_MODE,
-                                    title = "Light mode",
-                                    description = "Always light mode"
+                                    title = stringResource(R.string.settings_screen_interface_light_mode_title),
+                                    description = stringResource(R.string.settings_screen_interface_light_mode_description)
                                 ),
                                 SettingsOption(
                                     value = DarkModeType.DARK_MODE,
-                                    title = "Dark mode",
-                                    description = "Always dark mode"
-                                )
+                                    title = stringResource(R.string.settings_screen_interface_dark_mode_title),
+                                    description = stringResource(R.string.settings_screen_interface_dark_mode_description))
                             ),
                             selectedValue = darkModeType,
                             onValueSelected = { selected -> saveDarkModeType(selected)}
                         )
                         SettingsDivider()
                         SettingsSwitch(
-                            title = "Animations",
-                            description = "Enable transitions and interface animations.\nMight decrease performance.",
+                            title = stringResource(R.string.settings_screen_animation_switch_title),
+                            description = stringResource(R.string.settings_screen_animation_switch_description), //nao sei como meter o \n
                             checked = animationsEnabled,
                             onCheckedChange = { animationsEnabled = it }
                         )
                     }
                 }
                 item {
-                    SettingsSection(title = "Notifications") {
+                    SettingsSection(title = stringResource(R.string.settings_screen_notifications_section)) {
                         SettingsSwitch(
-                            title = "Nearby reports",
-                            description = "Notify me about reports near my location",
+                            title = stringResource(R.string.settings_screen_notifications_section_nearby_reports_switch_title),
+                            description = stringResource(R.string.settings_screen_notifications_section_nearby_reports_switch_description),
                             checked = nearbyNotifications,
                             onCheckedChange = { nearbyNotifications = it }
                         )
                         SettingsDivider()
                         SettingsSwitch(
-                            title = "Report updates",
-                            description = "Notify me when a report changes status",
+                            title = stringResource(R.string.settings_screen_notifications_section_report_updates_switch_title),
+                            description = stringResource(R.string.settings_screen_notifications_section_report_updates_switch_description),
                             checked = reportUpdates,
                             onCheckedChange = { reportUpdates = it }
                         )
                         SettingsDivider()
                         SettingsSwitch(
-                            title = "Comments",
-                            description = "Notify me when someone comments on my reports",
+                            title = stringResource(R.string.settings_screen_notifications_section_comments_switch_title),
+                            description = stringResource(R.string.settings_screen_notifications_section_comments_switch_description),
                             checked = commentNotifications,
                             onCheckedChange = { commentNotifications = it }
                         )
                         SettingsDivider()
                         SettingsSwitch(
-                            title = "High-severity reports",
-                            description = "Notify me about urgent problems in my area",
+                            title = stringResource(R.string.settings_screen_notifications_section_high_severity_reports_switch_title),
+                            description = stringResource(R.string.settings_screen_notifications_section_high_severity_reports_switch_description),
                             checked = highSeverityNotifications,
                             onCheckedChange = { highSeverityNotifications = it }
                         )
                     }
                 }
                 item {
-                    SettingsSection(title = "Map") {
+                    SettingsSection(title = stringResource(R.string.settings_screen_map_section)) {
                         SettingsSingleFromMultiple(
                             title = "Orientation",
                             description = "Choose how the map should rotate",
@@ -202,7 +203,7 @@ fun SettingsScreen(
                                 SettingsOption(
                                     value = MapOrientationMode.MANUAL_ROTATION,
                                     title = "Manual rotation",
-                                    description = "Allow for free manual rotattion of the map"
+                                    description = "Allow for free manual rotation of the map"
                                 ),
                                 SettingsOption(
                                     value = MapOrientationMode.COMPASS,
