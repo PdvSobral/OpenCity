@@ -158,13 +158,13 @@ fun SettingsScreen(
                 item {
                     SettingsSection(title = stringResource(R.string.settings_screen_map_section)) {
                         SettingsSingleFromMultiple(
-                            title = "Orientation",
-                            description = "Choose how the map should rotate",
+                            title = stringResource(R.string. settings_screen_map_section_title),
+                            description = stringResource(R.string. settings_screen_map_section_description),
                             options = listOf(
                                 SettingsOption(
                                     value = MapOrientationMode.NORTH_UP,
-                                    title = "North up",
-                                    description = "Keep north at the top of the map"
+                                    title = stringResource(R.string. settings_screen_map_north_section_title),
+                                    description = stringResource(R.string. settings_screen_map_north_section_description)
                                 ),
                                 SettingsOption(
                                     value = MapOrientationMode.MANUAL_ROTATION,

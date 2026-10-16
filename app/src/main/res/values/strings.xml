@@ -67,4 +67,8 @@
     <string name="settings_screen_notifications_section_high_severity_reports_switch_description">Notify me about urgent problems in my area</string>
     <string name="settings_screen_map_section">Map</string>
     <string name="settings_screen_notifications_section_nearby_reports_switch_description">Notify me about reports near my location</string>
+    <string name="settings_screen_map_section_title">Orientation</string>
+    <string name="settings_screen_map_section_description">Choose how the map should rotate</string>
+    <string name="settings_screen_map_north_section_title">North up</string>
+    <string name="settings_screen_map_north_section_description">Keep north at the top of the map</string>
 </resources>

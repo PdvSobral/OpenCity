@@ -61,8 +61,12 @@
     <string name="settings_screen_notifications_section_report_updates_switch_description">Notificar-me quando uma participação mudar de estado</string>
     <string name="settings_screen_notifications_section_comments_switch_title">Comentários</string>
     <string name="settings_screen_notifications_section_comments_switch_description">Notificar-me quando alguém comenta nas minhas participações</string>
-    <string name="settings_screen_notifications_section_high_severity_reports_switch_title">Relatórios de elevada gravidade</string>
+    <string name="settings_screen_notifications_section_high_severity_reports_switch_title">Relatórios de alta gravidade</string>
     <string name="settings_screen_notifications_section_high_severity_reports_switch_description">Notificar-me sobre problemas urgentes na minha área</string>
     <string name="settings_screen_map_section">Mapa</string>
     <string name="settings_screen_notifications_section_nearby_reports_switch_description">Notificar-me sobre participações prócimas da minha localização</string>
+    <string name="settings_screen_map_section_title">Orientação</string>
+    <string name="settings_screen_map_section_description">Escolha como o mapa deve rodar</string>
+    <string name="settings_screen_map_north_section_title">Norte para cima</string>
+    <string name="settings_screen_map_north_section_description">Manter o norte no topo do mapa</string>
 </resources>
