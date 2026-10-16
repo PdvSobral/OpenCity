@@ -15,39 +15,74 @@ import kotlinx.coroutines.flow.map
 private val Context.settingsDataStore by preferencesDataStore(name = "settings")
 
 
+data class SettingOption<KeyType, ValueType>(
+    val key: Preferences.Key<KeyType>,
+    val defaultValue: ValueType,
+    val encode: (ValueType) -> KeyType,
+    val decode: (KeyType) -> ValueType?
+){ fun readFrom(preferences: Preferences): ValueType = preferences[key]?.let(decode) ?: defaultValue}
+
+
+object Settings {
+    val SERVER_ADDRESS = SettingOption(
+        key = stringPreferencesKey("server_address"),
+        defaultValue = "",
+        encode = { it },
+        decode = { it }
+    )
+
+    val NOTIFICATIONS_ENABLED = SettingOption(
+        key = booleanPreferencesKey("notifications_enabled"),
+        defaultValue = false,
+        encode = { it },
+        decode = { it }
+    )
+
+    val THEME_MODE = SettingOption(
+        key = stringPreferencesKey("theme_mode"),
+        defaultValue = DarkModeType.AUTO,
+        encode = { it.name },
+        decode = { stored -> DarkModeType.entries.firstOrNull { it.name == stored } }
+    )
+
+    val MAP_ORIENTATION_MODE = SettingOption(
+        key = stringPreferencesKey("map_orientation_mode"),
+        defaultValue = MapOrientationMode.NORTH_UP,
+        encode = { it.name },
+        decode = { stored -> MapOrientationMode.entries.firstOrNull { it.name == stored } }
+    )
+
+    val ANIMATIONS = SettingOption(
+        key = booleanPreferencesKey("animations_on"),
+        defaultValue = true,
+        encode = { it },
+        decode = { it }
+    )
+}
+
+
 data class AppSettings(
-    val serverAddress: String = "",
-    val notificationsEnabled: Boolean = false,
-    val themeMode: DarkModeType = DarkModeType.AUTO,
-    val mapOrientationMode: MapOrientationMode = MapOrientationMode.NORTH_UP
+    val serverAddress: String = Settings.SERVER_ADDRESS.defaultValue,
+    val notificationsEnabled: Boolean = Settings.NOTIFICATIONS_ENABLED.defaultValue,
+    val themeMode: DarkModeType = Settings.THEME_MODE.defaultValue,
+    val mapOrientationMode: MapOrientationMode = Settings.MAP_ORIENTATION_MODE.defaultValue,
+    val animationsOn: Boolean = Settings.ANIMATIONS.defaultValue
 )
 
-object SettingsKeys {
-    val SERVER_ADDRESS = stringPreferencesKey("server_address")
-    val NOTIFICATIONS_ENABLED = booleanPreferencesKey("notifications_enabled")
-    val THEME_MODE = stringPreferencesKey("theme_mode")
-    val MAP_ORIENTATION_MODE = stringPreferencesKey("map_orientation_mode")
-}
 
 class SettingsRepository(private val context: Context) {
 
     val settings: Flow<AppSettings> = context.settingsDataStore.data.map { prefs ->
         AppSettings(
-            serverAddress = prefs[SettingsKeys.SERVER_ADDRESS] ?: "",
-            notificationsEnabled = prefs[SettingsKeys.NOTIFICATIONS_ENABLED] ?: false,
-            themeMode = DarkModeType.entries.firstOrNull { it.name == prefs[SettingsKeys.THEME_MODE] } ?: DarkModeType.AUTO,
-            mapOrientationMode = MapOrientationMode.entries.firstOrNull { it.name == prefs[SettingsKeys.MAP_ORIENTATION_MODE] } ?: MapOrientationMode.NORTH_UP,
+            serverAddress = Settings.SERVER_ADDRESS.readFrom(prefs),
+            notificationsEnabled = Settings.NOTIFICATIONS_ENABLED.readFrom(prefs),
+            themeMode = Settings.THEME_MODE.readFrom(prefs),
+            mapOrientationMode = Settings.MAP_ORIENTATION_MODE.readFrom(prefs),
+            animationsOn = Settings.ANIMATIONS.readFrom(prefs)
         )
     }
 
-    suspend fun <T> setSettingValue(key: Preferences.Key<T>, value: T) {
-        context.settingsDataStore.edit { prefs -> prefs[key] = value }
-    }
-    // Values that are not one of the basic types need overloads
-    suspend fun setSettingValue(key: Preferences.Key<String>, value: DarkModeType) {
-        context.settingsDataStore.edit { prefs -> prefs[key] = value.name }
-    }
-    suspend fun setSettingValue(key: Preferences.Key<String>, value: MapOrientationMode) {
-        context.settingsDataStore.edit { prefs -> prefs[key] = value.name }
+    suspend fun <K, V> setSettingValue(option: SettingOption<K, V>, value: V) {
+        context.settingsDataStore.edit { prefs -> prefs[option.key] = option.encode(value) }
     }
 }

@@ -41,7 +41,7 @@ import com.example.opencity.ui.components.settings.SettingsOption
 import com.example.opencity.models.enums.DarkModeType
 import com.example.opencity.models.enums.MapOrientationMode
 import com.example.opencity.storage.AppSettings
-import com.example.opencity.storage.SettingsKeys
+import com.example.opencity.storage.Settings
 import com.example.opencity.storage.SettingsRepository
 import kotlinx.coroutines.launch
 
@@ -63,7 +63,7 @@ fun SettingsScreen(
         return
     }
     val darkModeType = currentSettings.themeMode
-    fun saveDarkModeType(mode: DarkModeType) { scope.launch { repository.setSettingValue(SettingsKeys.THEME_MODE, mode); } }
+    fun saveDarkModeType(mode: DarkModeType) { scope.launch { repository.setSettingValue(Settings.THEME_MODE, mode); } }
 
     var animationsEnabled by rememberSaveable { mutableStateOf(true) }
 
@@ -73,7 +73,7 @@ fun SettingsScreen(
     var highSeverityNotifications by rememberSaveable { mutableStateOf(false) }
 
     val mapOrientation = currentSettings.mapOrientationMode
-    fun saveMapOrientationMode(mode: MapOrientationMode) { scope.launch { repository.setSettingValue(SettingsKeys.MAP_ORIENTATION_MODE, mode) } }
+    fun saveMapOrientationMode(mode: MapOrientationMode) { scope.launch { repository.setSettingValue(Settings.MAP_ORIENTATION_MODE, mode) } }
 
     var heatmapEnabled by rememberSaveable { mutableStateOf(false) }
     var pathTracingEnabled by rememberSaveable { mutableStateOf(false) }
@@ -107,7 +107,7 @@ fun SettingsScreen(
                             onClick = {
                                 showConfirmation = false
                                 // TODO: call onLogOut()
-                                scope.launch { repository.setSettingValue(SettingsKeys.SERVER_ADDRESS, ""); }
+                                scope.launch { repository.setSettingValue(Settings.SERVER_ADDRESS, ""); }
                             }
                         ) {
                             Text("Continue")
