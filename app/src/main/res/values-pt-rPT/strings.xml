@@ -81,4 +81,13 @@
     <string name="settings_screen_marker_section_title">Marcadores personalizados</string>
     <string name="settings_screen_marker_section_description">Criar e gerir os seus marcadores do mapa</string>
     <string name="settings_screen_marker_section_button">Gerir</string>
+    <string name="settings_screen_server_section">Servidor</string>
+    <string name="settings_screen_server_change_section_title">Mudar de servidor</string>
+    <string name="settings_screen_server_change_section_description">Alterar a ligação do servidor OpenCity</string>
+    <string name="settings_screen_server_change_section_button">Configurar</string>
+    <string name="settings_screen_privacy_section_title">"Privacidade e dados   "</string>
+    <string name="settings_screen_privacy_data_management_section_title">"Gestão de dados e privacidade "</string>
+    <string name="settings_screen_privacy_data_management_section_description">Gerir dados armazenados e opções de privacidade da conta</string>
+    <string name="settings_screen_privacy_data_management_section_button">Abrir</string>
+    <string name="account_screen_create_account">Crie uma conta!</string>
 </resources>

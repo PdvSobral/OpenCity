@@ -217,22 +217,22 @@ fun SettingsScreen(
                     }
                 }
                 item {
-                    SettingsSection(title = "Server") {
+                    SettingsSection(title = stringResource(R.string. settings_screen_server_section)) {
                         SettingsAction(
-                            title = "Change Server",
-                            description = "Change the OpenCity server connection",
-                            buttonText = "Configure",
+                            title = stringResource(R.string. settings_screen_server_change_section_title),
+                            description =  stringResource(R.string. settings_screen_server_change_section_description),
+                            buttonText =  stringResource(R.string. settings_screen_server_change_section_button),
                             onClick = { onServerConfiguration() }
                         )
                     }
                 }
 
                 item {
-                    SettingsSection(title = "Privacy and data") {
+                    SettingsSection(title  = stringResource(R.string. settings_screen_privacy_section_title)) {
                         SettingsAction(
-                            title = "Privacy and data management",
-                            description = "Manage stored data and account privacy options",
-                            buttonText = "Open",
+                            title = stringResource(R.string. settings_screen_privacy_data_management_section_title),
+                            description = stringResource(R.string. settings_screen_privacy_data_management_section_description),
+                            buttonText = stringResource(R.string. settings_screen_privacy_data_management_section_button),
                             onClick = onAccountSettings
                         )
                     }
