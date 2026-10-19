@@ -69,4 +69,16 @@
     <string name="settings_screen_map_section_description">Escolha como o mapa deve rodar</string>
     <string name="settings_screen_map_north_section_title">Norte para cima</string>
     <string name="settings_screen_map_north_section_description">Manter o norte no topo do mapa</string>
+    <string name="settings_screen_map_manual_section_title">Rotação manual</string>
+    <string name="settings_screen_map_manual_section_description">Permitir a rotação manual livre do mapa</string>
+    <string name="settings_screen_map_compass_section_title">Bússola</string>
+    <string name="settings_screen_map_compass_section_description">Rodar o mapa de acordo com a bússola interna do dispositivo</string>
+    <string name="settings_screen_heatmap_section_title">Mapa térmico</string>
+    <string name="settings_screen_heatmap_section_description">Mostrar áreas com grande concentração de relatórios</string>
+    <string name="settings_screen_offline_section_title">Mapa offline</string>
+    <string name="settings_screen_offline_section_description">Descarregar e gerir áreas de mapas offline</string>
+    <string name="settings_screen_offline_section_button">Gerir</string>
+    <string name="settings_screen_marker_section_title">Marcadores personalizados</string>
+    <string name="settings_screen_marker_section_description">Criar e gerir os seus marcadores do mapa</string>
+    <string name="settings_screen_marker_section_button">Gerir</string>
 </resources>
