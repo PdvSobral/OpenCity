@@ -43,6 +43,7 @@ import com.example.opencity.models.enums.MapOrientationMode
 import com.example.opencity.storage.AppSettings
 import com.example.opencity.storage.Settings
 import com.example.opencity.storage.SettingsRepository
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 
@@ -51,19 +52,22 @@ fun SettingsScreen(
     onManageMarkers: () -> Unit = {},
     onOfflineMaps: () -> Unit = {},
     onAccountSettings: () -> Unit = {},
-    onReturn: () -> Unit = {}
+    onReturn: () -> Unit = {},
+    settingsRepo: SettingsRepository
 ) {
-    val context = LocalContext.current
-    val repository = remember(context.applicationContext) { SettingsRepository(context.applicationContext) }
-    val scope = rememberCoroutineScope()
-    val settings by produceState<AppSettings?>(initialValue = null, key1 = repository) { repository.settings.collect { value = it } }
+    val scope: CoroutineScope = rememberCoroutineScope()
+    val settings by produceState<AppSettings?>(initialValue = null, key1 = settingsRepo) { settingsRepo.settings.collect { value = it } }
     val currentSettings = settings
     if (currentSettings == null) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
         return
     }
     val darkModeType = currentSettings.themeMode
-    fun saveDarkModeType(mode: DarkModeType) { scope.launch { repository.setSettingValue(Settings.THEME_MODE, mode); } }
+    fun saveDarkModeType(mode: DarkModeType) { scope.launch {
+        settingsRepo.setSettingValue(
+            Settings.THEME_MODE,
+            mode
+        ); } }
 
     var animationsEnabled by rememberSaveable { mutableStateOf(true) }
 
@@ -73,7 +77,11 @@ fun SettingsScreen(
     var highSeverityNotifications by rememberSaveable { mutableStateOf(false) }
 
     val mapOrientation = currentSettings.mapOrientationMode
-    fun saveMapOrientationMode(mode: MapOrientationMode) { scope.launch { repository.setSettingValue(Settings.MAP_ORIENTATION_MODE, mode) } }
+    fun saveMapOrientationMode(mode: MapOrientationMode) { scope.launch {
+        settingsRepo.setSettingValue(
+            Settings.MAP_ORIENTATION_MODE,
+            mode
+        ) } }
 
     var heatmapEnabled by rememberSaveable { mutableStateOf(false) }
     var pathTracingEnabled by rememberSaveable { mutableStateOf(false) }
@@ -107,7 +115,11 @@ fun SettingsScreen(
                             onClick = {
                                 showConfirmation = false
                                 // TODO: call onLogOut()
-                                scope.launch { repository.setSettingValue(Settings.SERVER_ADDRESS, ""); }
+                                scope.launch {
+                                    settingsRepo.setSettingValue(
+                                        Settings.SERVER_ADDRESS,
+                                        ""
+                                    ); }
                             }
                         ) {
                             Text("Continue")

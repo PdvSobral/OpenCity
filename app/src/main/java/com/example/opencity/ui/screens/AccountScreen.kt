@@ -248,7 +248,7 @@ private fun AccountHeader(
 @Composable
 private fun AccountAvatar(account: Account?) {
     val initials = buildString {
-        (account?.displayName ?: "Anonymous").takeIf { it.isNotBlank() } ?: (account?.username ?: "anonymous").split(" ").take(2).forEach { name -> name.firstOrNull()?.let { append(it.uppercase()) } }
+        ((account?.displayName ?: "Anonymous").takeIf { it.isNotBlank() } ?: (account?.username ?: "anonymous")).split(" ").take(2).forEach { name -> name.firstOrNull()?.let { append(it.uppercase()) } }
         if (isEmpty()) { append((account?.username ?: "anonymous").take(2).uppercase()) }
     }
     Box(
