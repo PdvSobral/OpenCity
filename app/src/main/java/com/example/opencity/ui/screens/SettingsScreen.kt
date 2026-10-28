@@ -204,23 +204,23 @@ fun SettingsScreen(
                 item {
                     SettingsSection(title = stringResource(R.string.settings_screen_map_section)) {
                         SettingsSingleFromMultiple(
-                            title = "Orientation",
-                            description = "Choose how the map should rotate",
+                            title = stringResource(R.string. settings_screen_map_section_title),
+                            description = stringResource(R.string. settings_screen_map_section_description),
                             options = listOf(
                                 SettingsOption(
                                     value = MapOrientationMode.NORTH_UP,
-                                    title = "North up",
-                                    description = "Keep north at the top of the map"
+                                    title = stringResource(R.string. settings_screen_map_north_section_title),
+                                    description = stringResource(R.string. settings_screen_map_north_section_description)
                                 ),
                                 SettingsOption(
                                     value = MapOrientationMode.MANUAL_ROTATION,
-                                    title = "Manual rotation",
-                                    description = "Allow for free manual rotation of the map"
+                                    title = stringResource(R.string. settings_screen_map_manual_section_title),
+                                    description = stringResource(R.string. settings_screen_map_manual_section_description)
                                 ),
                                 SettingsOption(
                                     value = MapOrientationMode.COMPASS,
-                                    title = "Compass",
-                                    description = "Rotate the map according to the device's internal compass"
+                                    title = stringResource(R.string. settings_screen_map_compass_section_title),
+                                    description = stringResource(R.string. settings_screen_map_compass_section_description)
                                 )
                             ),
                             selectedValue = mapOrientation,
@@ -228,49 +228,49 @@ fun SettingsScreen(
                         )
                         SettingsDivider()
                         SettingsSwitch(
-                            title = "Heatmap",
-                            description = "Show areas with a high concentration of reports",
+                            title = stringResource(R.string. settings_screen_heatmap_section_title),
+                            description = stringResource(R.string. settings_screen_heatmap_section_description),
                             checked = heatmapEnabled,
                             onCheckedChange = { heatmapEnabled = it }
                         )
                         SettingsDivider()
                         SettingsSwitch(
-                            title = "Path tracing",
+                            title = "Path tracing",       // nao traduzi porque vai ser para tirar
                             description = "Show paths and routes on the map",
                             checked = pathTracingEnabled,
                             onCheckedChange = { pathTracingEnabled = it }
                         )
                         SettingsDivider()
                         SettingsAction(
-                            title = "Offline maps",
-                            description = "Download and manage offline map areas",
-                            buttonText = "Manage",
+                            title = stringResource(R.string. settings_screen_offline_section_title),
+                            description = stringResource(R.string. settings_screen_offline_section_description),
+                            buttonText = stringResource(R.string. settings_screen_offline_section_button),
                             onClick = onOfflineMaps
                         )
                         SettingsAction(
-                            title = "Custom markers",
-                            description = "Create and manage your map markers",
-                            buttonText = "Manage",
+                            title = stringResource(R.string. settings_screen_marker_section_title),
+                            description = stringResource(R.string. settings_screen_marker_section_description),
+                            buttonText = stringResource(R.string. settings_screen_marker_section_button),
                             onClick = onManageMarkers
                         )
                     }
                 }
                 item {
-                    SettingsSection(title = "Server") {
+                    SettingsSection(title = stringResource(R.string. settings_screen_server_section)) {
                         SettingsAction(
-                            title = "Change Server",
-                            description = "Change the OpenCity server connection",
-                            buttonText = "Configure",
+                            title = stringResource(R.string. settings_screen_server_change_section_title),
+                            description =  stringResource(R.string. settings_screen_server_change_section_description),
+                            buttonText =  stringResource(R.string. settings_screen_server_change_section_button),
                             onClick = { onServerConfiguration() }
                         )
                     }
                 }
                 item {
-                    SettingsSection(title = "Privacy and data") {
+                    SettingsSection(title  = stringResource(R.string. settings_screen_privacy_section_title)) {
                         SettingsAction(
-                            title = "Privacy and data management",
-                            description = "Manage stored data and account privacy options",
-                            buttonText = "Open",
+                            title = stringResource(R.string. settings_screen_privacy_data_management_section_title),
+                            description = stringResource(R.string. settings_screen_privacy_data_management_section_description),
+                            buttonText = stringResource(R.string. settings_screen_privacy_data_management_section_button),
                             onClick = onAccountSettings
                         )
                     }

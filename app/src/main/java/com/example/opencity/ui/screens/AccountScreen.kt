@@ -173,7 +173,7 @@ fun AccountScreen(
                             contentDescription = null
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text("Create an Account!")
+                        Text(stringResource(R.string. account_screen_create_account))
                     }
                 }
                 Spacer(modifier = Modifier.height(12.dp))
