@@ -22,18 +22,32 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import android.content.Context
+import android.hardware.Sensor
+import android.hardware.SensorEvent
+import android.hardware.SensorEventListener
+import android.hardware.SensorManager
 import com.example.opencity.R
+import com.example.opencity.models.enums.MapOrientationMode
 import com.example.opencity.ui.components.TopBar
 import com.example.opencity.ui.components.map.CompassIcon
 
 @Composable
-fun MapScreen(onCreateReport: () -> Unit) {
+fun MapScreen(
+    onCreateReport: () -> Unit,
+    mapMode: MapOrientationMode
+) {
     Column(modifier = Modifier.fillMaxSize().padding(all = 0.dp)) {
         Row(modifier = Modifier.fillMaxWidth().padding(all = 0.dp)) {
             TopBar("OpenCity", stringResource(R.string.map_screen_topbar_description))
@@ -79,7 +93,7 @@ fun MapScreen(onCreateReport: () -> Unit) {
                 modifier = Modifier.align(Alignment.TopEnd).padding(top = 4.dp, bottom = 0.dp, start = 0.dp, end = 10.dp),
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) { TopRightColumnContent(onCreateReport) }
+            ) { TopRightColumnContent(onCreateReport, getCompassOrientation(mapMode)) }
             Column(
                 modifier = Modifier.align(Alignment.BottomEnd).padding(top = 0.dp, bottom = 10.dp, start = 0.dp, end = 10.dp),
                 horizontalAlignment = Alignment.End,
@@ -90,7 +104,72 @@ fun MapScreen(onCreateReport: () -> Unit) {
 }
 
 @Composable
-private fun TopRightColumnContent(onReportButtonClick: () -> Unit) {
+private fun getCompassOrientation(mode: MapOrientationMode): Float {
+    var azimuthDegrees by remember { mutableFloatStateOf(0f) }
+
+    if (mode == MapOrientationMode.COMPASS) {
+        // TODO: Later, it will be tied to the map. for now, it itself has the de sensor orientation.
+        val context = LocalContext.current
+        val lifecycleOwner = LocalLifecycleOwner.current
+        val sensorManager = remember(context) {
+            context.getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        }
+        val rotationSensor = remember(sensorManager) {
+            sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR)
+        }
+        DisposableEffect(lifecycleOwner, sensorManager, rotationSensor) {
+            val listener = object : SensorEventListener {
+                private val rotationMatrix = FloatArray(9)
+                private val orientation = FloatArray(3)
+
+                override fun onSensorChanged(event: SensorEvent) {
+                    SensorManager.getRotationMatrixFromVector(rotationMatrix, event.values)
+                    SensorManager.getOrientation(rotationMatrix, orientation)
+                    azimuthDegrees = Math.toDegrees(orientation[0].toDouble()).toFloat().let { (it + 360f) % 360f }
+                }
+
+                override fun onAccuracyChanged(sensor: Sensor?, accuracy: Int) = Unit
+            }
+
+            fun startListening() {
+                rotationSensor?.let {
+                    sensorManager.registerListener(
+                        listener,
+                        it,
+                        SensorManager.SENSOR_DELAY_UI
+                    )
+                }
+            }
+
+            val observer = LifecycleEventObserver { _, event ->
+                when (event) {
+                    Lifecycle.Event.ON_START -> startListening()
+                    Lifecycle.Event.ON_STOP -> sensorManager.unregisterListener(listener)
+                    else -> Unit
+                }
+            }
+
+            lifecycleOwner.lifecycle.addObserver(observer)
+            if (lifecycleOwner.lifecycle.currentState.isAtLeast(Lifecycle.State.STARTED)) {
+                startListening()
+            }
+
+            onDispose {
+                sensorManager.unregisterListener(listener)
+                lifecycleOwner.lifecycle.removeObserver(observer)
+            }
+        }
+    } else if (mode == MapOrientationMode.NORTH_UP) { azimuthDegrees = 0f }
+    else if (mode == MapOrientationMode.MANUAL_ROTATION) { azimuthDegrees = 90f }
+    return azimuthDegrees
+}
+
+
+@Composable
+private fun TopRightColumnContent(
+    onReportButtonClick: () -> Unit,
+    compassOrientation: Float
+) {
     OutlinedButton(
         modifier = Modifier.size(height = 40.dp, width = 135.dp), //TODO: a ver tamanho, possivelmente dinâmico
         onClick = onReportButtonClick
@@ -104,7 +183,7 @@ private fun TopRightColumnContent(onReportButtonClick: () -> Unit) {
             modifier = Modifier.padding(all = 0.dp)
         )
     }
-    CompassIcon()
+    CompassIcon(compassOrientation)
 }
 
 @Composable

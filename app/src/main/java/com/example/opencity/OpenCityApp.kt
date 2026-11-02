@@ -1,5 +1,6 @@
 package com.example.opencity
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -12,19 +13,23 @@ import androidx.compose.material.icons.automirrored.outlined.Assignment
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
+import com.example.opencity.storage.AppSettings
 import com.example.opencity.ui.screens.SettingsScreen
 import com.example.opencity.ui.screens.AccountScreen
 import com.example.opencity.ui.screens.MapScreen
@@ -72,6 +77,13 @@ private val TOP_LEVEL_ROUTES : List<TopLevelRoute> = listOf(Map, Reports, Notifi
 fun OpenCityApp(
     settingsRepo: SettingsRepository
 ) {
+    val settings by produceState<AppSettings?>(initialValue = null, key1 = settingsRepo) { settingsRepo.settings.collect { value = it } }
+    val currentSettings = settings
+    if (currentSettings == null) {
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
+        return
+    }
+
     val topLevelBackStack = remember { TopLevelBackStack<Any>(Map) }
 
     Column (modifier = Modifier.fillMaxSize()){
@@ -103,7 +115,7 @@ fun OpenCityApp(
                 onBack = { topLevelBackStack.removeLast() },
                 entryProvider = entryProvider {
                     entry<Map>{
-                        MapScreen(onCreateReport = {})
+                        MapScreen(onCreateReport = {}, currentSettings.mapOrientationMode)
                     }
                     entry<Reports>{
                         ReportsScreen()
