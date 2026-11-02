@@ -25,7 +25,6 @@ enum class ReportStatus {
     RESOLVED        // It is considered a case closed and solved
 }
 
-// TODO: Finish Mapping
 fun ReportStatus.toStringValue(): String = when (this) {
    ReportStatus.IN_RESOLUTION -> "In resolution"
    ReportStatus.REPORTED -> "In progress"
@@ -33,7 +32,6 @@ fun ReportStatus.toStringValue(): String = when (this) {
    else -> {"UNDEFINED"}
 }
 
-// TODO: Finish Mapping
 @Composable
 fun ReportStatus.toColourValue(): Color = when (this) {
     ReportStatus.REPORTED -> MaterialTheme.colorScheme.error
