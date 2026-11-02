@@ -58,6 +58,13 @@ object Settings {
         encode = { it },
         decode = { it }
     )
+
+    val NEARBY_REPORTS = SettingOption(
+        key = booleanPreferencesKey("nearby_reports"),
+        defaultValue = false,
+        encode = { it },
+        decode = { it }
+    )
 }
 
 
@@ -66,7 +73,8 @@ data class AppSettings(
     val notificationsEnabled: Boolean = Settings.NOTIFICATIONS_ENABLED.defaultValue,
     val themeMode: DarkModeType = Settings.THEME_MODE.defaultValue,
     val mapOrientationMode: MapOrientationMode = Settings.MAP_ORIENTATION_MODE.defaultValue,
-    val animationsOn: Boolean = Settings.ANIMATIONS.defaultValue
+    val animationsOn: Boolean = Settings.ANIMATIONS.defaultValue,
+    val nearbyReports: Boolean = Settings.NEARBY_REPORTS.defaultValue
 )
 
 
@@ -78,7 +86,8 @@ class SettingsRepository(private val context: Context) {
             notificationsEnabled = Settings.NOTIFICATIONS_ENABLED.readFrom(prefs),
             themeMode = Settings.THEME_MODE.readFrom(prefs),
             mapOrientationMode = Settings.MAP_ORIENTATION_MODE.readFrom(prefs),
-            animationsOn = Settings.ANIMATIONS.readFrom(prefs)
+            animationsOn = Settings.ANIMATIONS.readFrom(prefs),
+            nearbyReports = Settings.NEARBY_REPORTS.readFrom(prefs)
         )
     }
 
