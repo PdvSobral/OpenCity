@@ -54,7 +54,6 @@ import com.example.opencity.ui.components.TopBar
 
 @Composable
 fun AccountScreen(
-    account: Account? = null, // TODO: Later when making a more robust system, maybe force to be passed smething, even if null
     onEditProfile: () -> Unit = {},
     onContributionHistory: () -> Unit = {},
     onExportData: () -> Unit = {},
@@ -67,6 +66,7 @@ fun AccountScreen(
     onAdminDashboard: () -> Unit = {},
     onCreateAccount: () -> Unit = {}
 ) {
+    val account: Account? = null // TODO: Make storage for this.
     Column(modifier = Modifier.fillMaxWidth()) {
         TopBar(stringResource(R.string.top_bar_account))
         Column(Modifier.fillMaxSize().padding(horizontal = 16.dp)) {

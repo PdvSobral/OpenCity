@@ -92,4 +92,10 @@
     <string name="settings_screen_privacy_data_management_section_description">Manage stored data and account privacy options</string>
     <string name="settings_screen_privacy_data_management_section_button">Open</string>
     <string name="account_screen_create_account">Create an Account!</string>
+    <string name="report_status_reported">In progress</string>
+    <string name="report_status_confirmed">Confirmed</string>
+    <string name="report_status_in_resolution">In resolution</string>
+    <string name="report_status_resolved">Resolved</string>
+    <string name="report_status_denied">Denied</string>
+    <string name="report_status_undefined">Undefined</string>
 </resources>

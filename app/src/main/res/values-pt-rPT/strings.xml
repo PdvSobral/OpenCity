@@ -90,4 +90,10 @@
     <string name="settings_screen_privacy_data_management_section_description">Gerir dados armazenados e opções de privacidade da conta</string>
     <string name="settings_screen_privacy_data_management_section_button">Abrir</string>
     <string name="account_screen_create_account">Crie uma conta!</string>
+    <string name="report_status_reported">Em progresso</string>
+    <string name="report_status_confirmed">Confirmado</string>
+    <string name="report_status_in_resolution">Em Resolução</string>
+    <string name="report_status_resolved">Resolvido</string>
+    <string name="report_status_denied">Recusado</string>
+    <string name="report_status_undefined">Não definido</string>
 </resources>

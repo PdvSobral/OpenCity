@@ -106,14 +106,6 @@ fun OpenCityApp(
                     }
                     entry<Account>{
                         AccountScreen(
-                            /*account = Account(
-                                id = 1,
-                                username = "alex",
-                                displayName = "Alex Smith",
-                                points = 125,
-                                role = AccountRole.USER,
-                                createdAt = "2026"
-                            ),*/
                             onAppSettings = { topLevelBackStack.add(Settings)}
                         )
                     }
