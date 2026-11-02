@@ -37,6 +37,10 @@ private sealed interface TopLevelRoute {
     val icon: ImageVector
     val labelResourceId: Int
 }
+private interface SubLevelRoute {
+    val returnableTo: Boolean
+}
+
 private data object Map : TopLevelRoute {
     override val icon = Icons.Outlined.Map
     override val labelResourceId = R.string.bottom_bar_item_map
@@ -45,7 +49,8 @@ private data object Reports : TopLevelRoute {
     override val icon = Icons.AutoMirrored.Outlined.Assignment
     override val labelResourceId = R.string.bottom_bar_item_report
 }
-private data object ReportScreen {
+private data object ReportScreen: SubLevelRoute {
+    override val returnableTo = false
     val report_id: Int? = null
 }
 private data object Notifications : TopLevelRoute {
@@ -56,7 +61,9 @@ private data object Account : TopLevelRoute {
     override val icon = Icons.Outlined.AccountCircle
     override val labelResourceId = R.string.bottom_bar_item_account
 }
-private data object Settings
+private data object Settings : SubLevelRoute {
+    override val returnableTo = false
+}
 
 private val TOP_LEVEL_ROUTES : List<TopLevelRoute> = listOf(Map, Reports, Notifications, Account)
 
@@ -140,16 +147,23 @@ class TopLevelBackStack<T: Any>(startKey: T) {
 
     private fun updateBackStack() = backStack.apply { clear(); addAll(topLevelStacks.flatMap { it.value }) }
 
+    private fun pruneNonReturnableCurrentTopLevel() {
+        topLevelStacks[topLevelKey]?.removeAll { route -> route is SubLevelRoute && !route.returnableTo }
+    }
+
     fun addTopLevel(key: T){
+        pruneNonReturnableCurrentTopLevel()
         // If the top level doesn't exist, add it
         if (topLevelStacks[key] == null){ topLevelStacks[key] = mutableStateListOf(key) }
         // Otherwise just move it to the end of the stacks
         else { topLevelStacks.apply { remove(key)?.let { put(key, it) } } }
         topLevelKey = key
+        pruneNonReturnableCurrentTopLevel()
         updateBackStack()
     }
 
     fun add(key: T){
+        pruneNonReturnableCurrentTopLevel()
         topLevelStacks[topLevelKey]?.add(key)
         updateBackStack()
     }
