@@ -36,28 +36,25 @@ import kotlin.collections.remove
 private sealed interface TopLevelRoute {
     val icon: ImageVector
     val labelResourceId: Int
-    val route: String
 }
 private data object Map : TopLevelRoute {
     override val icon = Icons.Outlined.Map
     override val labelResourceId = R.string.bottom_bar_item_map
-    override val route = "map"
 }
 private data object Reports : TopLevelRoute {
     override val icon = Icons.AutoMirrored.Outlined.Assignment
     override val labelResourceId = R.string.bottom_bar_item_report
-    override val route = "reports"
 }
-private data object Report
+private data object ReportScreen {
+    val report_id: Int? = null
+}
 private data object Notifications : TopLevelRoute {
     override val icon = Icons.Outlined.Notifications
     override val labelResourceId = R.string.bottom_bar_item_notifications
-    override val route = "notifications"
 }
 private data object Account : TopLevelRoute {
     override val icon = Icons.Outlined.AccountCircle
     override val labelResourceId = R.string.bottom_bar_item_account
-    override val route = "account"
 }
 private data object Settings
 
@@ -68,10 +65,6 @@ private val TOP_LEVEL_ROUTES : List<TopLevelRoute> = listOf(Map, Reports, Notifi
 fun OpenCityApp(
     settingsRepo: SettingsRepository
 ) {
-    //val navBackStackEntry by navController.currentBackStackEntryAsState()
-    //val currentDestination = navBackStackEntry?.destination
-    //val currentRoute = currentDestination?.route
-
     val topLevelBackStack = remember { TopLevelBackStack<Any>(Map) }
 
     Column (modifier = Modifier.fillMaxSize()){
@@ -81,9 +74,7 @@ fun OpenCityApp(
                     TOP_LEVEL_ROUTES.forEach { topLevelRoute ->
                         val isSelected = topLevelRoute == topLevelBackStack.topLevelKey
                         NavigationBarItem(
-                            //selected = currentRoute?.contains(item.route) == true ,
                             selected = isSelected,
-                            //onClick = { onItemSelected(item.route) },
                             onClick = {
                                 topLevelBackStack.addTopLevel(topLevelRoute)
                             },
@@ -108,7 +99,6 @@ fun OpenCityApp(
                         MapScreen(onCreateReport = {})
                     }
                     entry<Reports>{
-                        //topLevelBackStack.add(Report)
                         ReportsScreen()
                     }
                     entry<Notifications>{
@@ -133,6 +123,11 @@ fun OpenCityApp(
                             settingsRepo = settingsRepo
                         )
                     }
+                    entry<ReportScreen> {
+                        // TODO: make the screen for reports, receives the report uuid.
+                        // for now, on the screen, we can put static data form a Report struct,
+                        // then we only need to change that (id will pass with it.report_id)
+                    }
                 },
             )
         }
@@ -142,9 +137,7 @@ fun OpenCityApp(
 
 class TopLevelBackStack<T: Any>(startKey: T) {
     // Maintain a stack for each top level route
-    private var topLevelStacks : LinkedHashMap<T, SnapshotStateList<T>> = linkedMapOf(
-        startKey to mutableStateListOf(startKey)
-    )
+    private var topLevelStacks : LinkedHashMap<T, SnapshotStateList<T>> = linkedMapOf(startKey to mutableStateListOf(startKey))
 
     // Expose the current top level route for consumers
     var topLevelKey by mutableStateOf(startKey)
@@ -153,24 +146,13 @@ class TopLevelBackStack<T: Any>(startKey: T) {
     // Expose the back stack so it can be rendered by the NavDisplay
     val backStack = mutableStateListOf(startKey)
 
-    private fun updateBackStack() =
-        backStack.apply {
-            clear()
-            addAll(topLevelStacks.flatMap { it.value })
-        }
+    private fun updateBackStack() = backStack.apply { clear(); addAll(topLevelStacks.flatMap { it.value }) }
 
     fun addTopLevel(key: T){
         // If the top level doesn't exist, add it
-        if (topLevelStacks[key] == null){
-            topLevelStacks.put(key, mutableStateListOf(key))
-        } else {
-            // Otherwise just move it to the end of the stacks
-            topLevelStacks.apply {
-                remove(key)?.let {
-                    put(key, it)
-                }
-            }
-        }
+        if (topLevelStacks[key] == null){ topLevelStacks[key] = mutableStateListOf(key) }
+        // Otherwise just move it to the end of the stacks
+        else { topLevelStacks.apply { remove(key)?.let { put(key, it) } } }
         topLevelKey = key
         updateBackStack()
     }

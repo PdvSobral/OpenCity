@@ -43,7 +43,7 @@
     <string name="account_settings_application_settings_subtitle">Theme, map, offline data, and preferences</string>
     <string name="account_section_other_section">Other</string>
     <string name="account_section_other_title">About OpenCity</string>
-    <string name="account_section_other_subtitle">erms of use, licenses, and project information</string>
+    <string name="account_section_other_subtitle">Terms of use, licenses, and project information</string>
     <string name="settings_screen_top_bar_title">Settings</string>
     <string name="settings_screen_top_bar_description">Costumize your OpenCity experience</string>
     <string name="settings_screen_appearance_section">Appearance</string>

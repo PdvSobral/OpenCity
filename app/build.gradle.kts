@@ -35,7 +35,6 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.2.1")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.navigation.compose)
     implementation(libs.androidx.navigation3.runtime)
     implementation(libs.androidx.navigation3.ui)
     testImplementation(libs.junit)
