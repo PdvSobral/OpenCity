@@ -23,10 +23,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.ui.NavDisplay
 import com.example.opencity.ui.screens.SettingsScreen
 import com.example.opencity.ui.screens.AccountScreen
 import com.example.opencity.ui.screens.MapScreen
@@ -61,14 +59,13 @@ private data object Account : TopLevelRoute {
     override val labelResourceId = R.string.bottom_bar_item_account
     override val route = "account"
 }
-
+private data object Settings
 
 private val TOP_LEVEL_ROUTES : List<TopLevelRoute> = listOf(Map, Reports, Notifications, Account)
 
 
 @Composable
 fun OpenCityApp(
-    navController: NavHostController = rememberNavController(),
     settingsRepo: SettingsRepository
 ) {
     //val navBackStackEntry by navController.currentBackStackEntryAsState()
@@ -102,32 +99,42 @@ fun OpenCityApp(
                 }
             }
         ) { innerPadding ->
-            NavHost(
-                navController = navController,
-                startDestination = "map",
-                modifier = Modifier.padding(innerPadding)
-            ) {
-                composable("map") {MapScreen(onCreateReport = {})} // Add report creation navigation later.
-                composable("reports") { ReportsScreen() }
-                composable("notifications") { NotificationsScreen() }
-                composable("account") {
-                    AccountScreen(/*account = Account(
-                        id = 1,
-                        username = "alex",
-                        displayName = "Alex Smith",
-                        points = 125,
-                        role = AccountRole.USER,
-                        createdAt = "2026"
-                    ),*/
-                    onAppSettings = { navController.navigate("account_appsettings")})
-                }
-                composable("account_appsettings") {
-                    SettingsScreen(
-                        onReturn = { navController.popBackStack() },
-                        settingsRepo = settingsRepo
-                    )
-                }
-            }
+            NavDisplay(
+                modifier = Modifier.padding(innerPadding),
+                backStack = topLevelBackStack.backStack,
+                onBack = { topLevelBackStack.removeLast() },
+                entryProvider = entryProvider {
+                    entry<Map>{
+                        MapScreen(onCreateReport = {})
+                    }
+                    entry<Reports>{
+                        //topLevelBackStack.add(Report)
+                        ReportsScreen()
+                    }
+                    entry<Notifications>{
+                        NotificationsScreen()
+                    }
+                    entry<Account>{
+                        AccountScreen(
+                            /*account = Account(
+                                id = 1,
+                                username = "alex",
+                                displayName = "Alex Smith",
+                                points = 125,
+                                role = AccountRole.USER,
+                                createdAt = "2026"
+                            ),*/
+                            onAppSettings = { topLevelBackStack.add(Settings)}
+                        )
+                    }
+                    entry<Settings>{
+                        SettingsScreen(
+                            onReturn = { topLevelBackStack.removeLast() },
+                            settingsRepo = settingsRepo
+                        )
+                    }
+                },
+            )
         }
     }
 }
