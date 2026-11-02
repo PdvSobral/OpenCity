@@ -30,12 +30,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
 import com.example.opencity.storage.AppSettings
-import com.example.opencity.ui.screens.SettingsScreen
+import com.example.opencity.ui.screens.ApplicationSettingsScreen
 import com.example.opencity.ui.screens.AccountScreen
 import com.example.opencity.ui.screens.MapScreen
 import com.example.opencity.ui.screens.NotificationsScreen
 import com.example.opencity.ui.screens.ReportsScreen
 import com.example.opencity.storage.SettingsRepository
+import com.example.opencity.ui.screens.NotificationSettingsScreen
+import com.example.opencity.ui.screens.SecuritySettingsScreen
 import kotlin.collections.remove
 
 private sealed interface TopLevelRoute {
@@ -66,7 +68,13 @@ private data object Account : TopLevelRoute {
     override val icon = Icons.Outlined.AccountCircle
     override val labelResourceId = R.string.bottom_bar_item_account
 }
-private data object Settings : SubLevelRoute {
+private data object ApplicationSettings : SubLevelRoute {
+    override val returnableTo = false
+}
+private data object SecuritySettings : SubLevelRoute {
+    override val returnableTo = false
+}
+private data object NotificationSettings : SubLevelRoute {
     override val returnableTo = false
 }
 
@@ -125,11 +133,25 @@ fun OpenCityApp(
                     }
                     entry<Account>{
                         AccountScreen(
-                            onAppSettings = { topLevelBackStack.add(Settings)}
+                            onAppSettings = { topLevelBackStack.add(ApplicationSettings) },
+                            onNotificationSettings = { topLevelBackStack.add(NotificationSettings) },
+                            onSecuritySettings = { topLevelBackStack.add(SecuritySettings) }
                         )
                     }
-                    entry<Settings>{
-                        SettingsScreen(
+                    entry<ApplicationSettings>{
+                        ApplicationSettingsScreen(
+                            onReturn = { topLevelBackStack.removeLast() },
+                            settingsRepo = settingsRepo
+                        )
+                    }
+                    entry<NotificationSettings>{
+                        NotificationSettingsScreen(
+                            onReturn = { topLevelBackStack.removeLast() },
+                            settingsRepo = settingsRepo
+                        )
+                    }
+                    entry<SecuritySettings>{
+                        SecuritySettingsScreen(
                             onReturn = { topLevelBackStack.removeLast() },
                             settingsRepo = settingsRepo
                         )

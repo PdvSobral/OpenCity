@@ -26,7 +26,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.opencity.R
@@ -48,10 +47,9 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun SettingsScreen(
+fun ApplicationSettingsScreen(
     onManageMarkers: () -> Unit = {},
     onOfflineMaps: () -> Unit = {},
-    onAccountSettings: () -> Unit = {},
     onReturn: () -> Unit = {},
     settingsRepo: SettingsRepository
 ) {
@@ -70,11 +68,6 @@ fun SettingsScreen(
         ); } }
 
     var animationsEnabled by rememberSaveable { mutableStateOf(true) }
-
-    var nearbyNotifications by rememberSaveable { mutableStateOf(true) }
-    var reportUpdates by rememberSaveable { mutableStateOf(true) }
-    var commentNotifications by rememberSaveable { mutableStateOf(true) }
-    var highSeverityNotifications by rememberSaveable { mutableStateOf(false) }
 
     val mapOrientation = currentSettings.mapOrientationMode
     fun saveMapOrientationMode(mode: MapOrientationMode) { scope.launch {
@@ -131,7 +124,7 @@ fun SettingsScreen(
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        TopBar(tittle = stringResource(R.string.settings_screen_top_bar_title), stringResource(R.string.settings_screen_top_bar_description), true, onReturn)
+        TopBar(tittle = stringResource(R.string.application_settings_screen_top_bar_title), stringResource(R.string.application_settings_screen_top_bar_description), true, onReturn)
         Column(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
             LazyColumn(
                 contentPadding = PaddingValues(bottom = 24.dp),
@@ -167,37 +160,6 @@ fun SettingsScreen(
                             description = stringResource(R.string.settings_screen_animation_switch_description), //nao sei como meter o \n
                             checked = animationsEnabled,
                             onCheckedChange = { animationsEnabled = it }
-                        )
-                    }
-                }
-                item {
-                    SettingsSection(title = stringResource(R.string.settings_screen_notifications_section)) {
-                        SettingsSwitch(
-                            title = stringResource(R.string.settings_screen_notifications_section_nearby_reports_switch_title),
-                            description = stringResource(R.string.settings_screen_notifications_section_nearby_reports_switch_description),
-                            checked = nearbyNotifications,
-                            onCheckedChange = { nearbyNotifications = it }
-                        )
-                        SettingsDivider()
-                        SettingsSwitch(
-                            title = stringResource(R.string.settings_screen_notifications_section_report_updates_switch_title),
-                            description = stringResource(R.string.settings_screen_notifications_section_report_updates_switch_description),
-                            checked = reportUpdates,
-                            onCheckedChange = { reportUpdates = it }
-                        )
-                        SettingsDivider()
-                        SettingsSwitch(
-                            title = stringResource(R.string.settings_screen_notifications_section_comments_switch_title),
-                            description = stringResource(R.string.settings_screen_notifications_section_comments_switch_description),
-                            checked = commentNotifications,
-                            onCheckedChange = { commentNotifications = it }
-                        )
-                        SettingsDivider()
-                        SettingsSwitch(
-                            title = stringResource(R.string.settings_screen_notifications_section_high_severity_reports_switch_title),
-                            description = stringResource(R.string.settings_screen_notifications_section_high_severity_reports_switch_description),
-                            checked = highSeverityNotifications,
-                            onCheckedChange = { highSeverityNotifications = it }
                         )
                     }
                 }
@@ -262,16 +224,6 @@ fun SettingsScreen(
                             description =  stringResource(R.string. settings_screen_server_change_section_description),
                             buttonText =  stringResource(R.string. settings_screen_server_change_section_button),
                             onClick = { onServerConfiguration() }
-                        )
-                    }
-                }
-                item {
-                    SettingsSection(title  = stringResource(R.string. settings_screen_privacy_section_title)) {
-                        SettingsAction(
-                            title = stringResource(R.string. settings_screen_privacy_data_management_section_title),
-                            description = stringResource(R.string. settings_screen_privacy_data_management_section_description),
-                            buttonText = stringResource(R.string. settings_screen_privacy_data_management_section_button),
-                            onClick = onAccountSettings
                         )
                     }
                 }

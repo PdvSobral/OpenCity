@@ -42,8 +42,9 @@
     <string name="account_section_other_section">Outro</string>
     <string name="account_section_other_title">Sobre OpenCity</string>
     <string name="account_section_other_subtitle">Termos de utilização, licenças e informações do projeto</string>
-    <string name="settings_screen_top_bar_title">Definições</string>
-    <string name="settings_screen_top_bar_description">Personalize a sua experiência OpenCity</string>
+    <string name="application_settings_screen_top_bar_title">Definições da Aplicação</string>
+    <string name="application_settings_screen_top_bar_description">Personalize a sua experiência OpenCity</string>
+    <string name="security_settings_screen_top_bar_description">Personalize a suas defenições de segurança</string>
     <string name="settings_screen_appearance_section">Aparência</string>
     <string name="settings_screen_interface_mode_title">Modo de interface</string>
     <string name="settings_screen_interface_mode_description">Escolha o estilo de aparência da aplicação</string>
@@ -96,4 +97,7 @@
     <string name="report_status_resolved">Resolvido</string>
     <string name="report_status_denied">Recusado</string>
     <string name="report_status_undefined">Não definido</string>
+    <string name="notification_settings_screen_top_bar_description">Personalize as notificações que recebe</string>
+    <string name="security_settings_screen_top_bar_title">Definições de Segurança</string>
+    <string name="notification_settings_screen_top_bar_title">Definições de Notificações</string>
 </resources>

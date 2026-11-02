@@ -44,8 +44,12 @@
     <string name="account_section_other_section">Other</string>
     <string name="account_section_other_title">About OpenCity</string>
     <string name="account_section_other_subtitle">Terms of use, licenses, and project information</string>
-    <string name="settings_screen_top_bar_title">Settings</string>
-    <string name="settings_screen_top_bar_description">Costumize your OpenCity experience</string>
+    <string name="application_settings_screen_top_bar_title">Application Settings</string>
+    <string name="application_settings_screen_top_bar_description">Costumize your OpenCity experience</string>
+    <string name="notification_settings_screen_top_bar_title">Notification Settings</string>
+    <string name="notification_settings_screen_top_bar_description">Costumize the notification you receive</string>
+    <string name="security_settings_screen_top_bar_title">Security Settings</string>
+    <string name="security_settings_screen_top_bar_description">Costumize your security settings</string>
     <string name="settings_screen_appearance_section">Appearance</string>
     <string name="settings_screen_interface_mode_title">Interface mode</string>
     <string name="settings_screen_interface_mode_description">Choose the appearance style of the app</string>
