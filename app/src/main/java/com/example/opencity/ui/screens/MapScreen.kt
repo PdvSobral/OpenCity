@@ -42,6 +42,7 @@ import com.example.opencity.R
 import com.example.opencity.models.enums.MapOrientationMode
 import com.example.opencity.ui.components.TopBar
 import com.example.opencity.ui.components.map.CompassIcon
+import com.example.opencity.ui.components.map.Marker
 
 @Composable
 fun MapScreen(
@@ -61,34 +62,20 @@ fun MapScreen(
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
             // Example map markers
-            Box(
-                modifier = Modifier
-                    .padding(start = 80.dp, top = 120.dp)
-                    .size(42.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.error),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Default.LocationOn,
-                    contentDescription = "Report location",
-                    tint = Color.White
-                )
-            }
-            Box(
-                modifier = Modifier
-                    .padding(start = 240.dp, top = 220.dp)
-                    .size(42.dp)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.primary),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    imageVector = Icons.Default.LocationOn,
-                    contentDescription = "Report location",
-                    tint = Color.White
-                )
-            }
+            Marker(
+                color = MaterialTheme.colorScheme.error,
+                description = "Report Location",
+                icon = Icons.Default.LocationOn,
+                x = 80,
+                y = 120,
+            )
+            Marker(
+                color = MaterialTheme.colorScheme.primary,
+                description = "Report Location",
+                icon = Icons.Default.LocationOn,
+                x = 240,
+                y = 220,
+            )
             Column(
                 modifier = Modifier.align(Alignment.TopEnd).padding(top = 4.dp, bottom = 0.dp, start = 0.dp, end = 10.dp),
                 horizontalAlignment = Alignment.End,
