@@ -13,12 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.opencity.R
-import com.example.opencity.models.Marker
 
 
 @Composable
 fun MapContainer(
-    markers: List<Marker>? = null,
+    markers: List<Int>? = null,
 ) {
     Box (
         modifier = Modifier.fillMaxWidth().fillMaxHeight()
