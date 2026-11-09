@@ -1,5 +1,7 @@
 package com.example.opencity.ui.screens
 
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.TextButton
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,17 +35,53 @@ import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import com.example.opencity.R
+import com.example.opencity.models.Report
+import com.example.opencity.models.ReportStatus
 import com.example.opencity.models.enums.MapOrientationMode
 import com.example.opencity.ui.components.TopBar
 import com.example.opencity.ui.components.map.CompassIcon
 import com.example.opencity.ui.components.map.MapContainer
 
+
+private data class MarkerInfo(
+    val report_id: Int
+)
 @Composable
 fun MapScreen(
     onCreateReport: () -> Unit,
     mapMode: MapOrientationMode
 ) {
+    var selectedMarker by remember { mutableStateOf<MarkerInfo?>(null) }
+
     Column(modifier = Modifier.fillMaxSize().padding(all = 0.dp)) {
+        // UI for when a marker is "clicked"
+        selectedMarker?.let { report_id ->
+            // TODO: pull from repo/modelview
+            val report: Report = Report(
+                id = 67,
+                title = "Report Title",
+                category = "Categoria",
+                description = "Report description",
+                address = "GPS coords",
+                status = ReportStatus.RESOLVED,
+                date = "Data"
+            )
+            AlertDialog(
+                onDismissRequest = { selectedMarker = null },
+                title = { Text(text = report.title) },
+                text = {
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text(text = "Localização: ${report.address}")
+                        Text(text = report.description)
+                    }
+                },
+                confirmButton = {
+                    TextButton( onClick = { selectedMarker = null }
+                    ) { Text("Fechar") }
+                }
+            )
+        }
+
         Row(modifier = Modifier.fillMaxWidth().padding(all = 0.dp)) {
             TopBar("OpenCity", stringResource(R.string.map_screen_topbar_description))
         }
@@ -51,6 +89,9 @@ fun MapScreen(
             modifier = Modifier.weight(1f).fillMaxWidth()
         ) {
             MapContainer()
+            /* FIXME: //
+             onClick = { selectedMarker = MarkerInfo(1) }
+            */
             Column(
                 modifier = Modifier.align(Alignment.TopEnd).padding(top = 4.dp, bottom = 0.dp, start = 0.dp, end = 10.dp),
                 horizontalAlignment = Alignment.End,
