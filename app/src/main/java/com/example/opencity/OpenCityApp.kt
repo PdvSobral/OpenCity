@@ -8,79 +8,45 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.Assignment
-import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.Map
-import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
+import com.example.opencity.app_navigation.NavigationStack
+import com.example.opencity.app_navigation.TopLevelRoute
+import com.example.opencity.app_navigation.routes.AccountNavRoute
+import com.example.opencity.app_navigation.routes.AccountNavSubRouteApplicationSettings
+import com.example.opencity.app_navigation.routes.AccountNavSubRouteNotificationSettings
+import com.example.opencity.app_navigation.routes.AccountNavSubRouteSecuritySettings
+import com.example.opencity.app_navigation.routes.MapNavRoute
+import com.example.opencity.app_navigation.routes.NotificationsNavRoute
+import com.example.opencity.app_navigation.routes.ReportNavSubRouteReportDetail
+import com.example.opencity.app_navigation.routes.ReportsNavRoute
 import com.example.opencity.storage.AppSettings
+import com.example.opencity.storage.SettingsRepository
 import com.example.opencity.ui.screens.ApplicationSettingsScreen
 import com.example.opencity.ui.screens.AccountScreen
 import com.example.opencity.ui.screens.MapScreen
 import com.example.opencity.ui.screens.NotificationsScreen
 import com.example.opencity.ui.screens.ReportsScreen
-import com.example.opencity.storage.SettingsRepository
 import com.example.opencity.ui.screens.NotificationSettingsScreen
 import com.example.opencity.ui.screens.ReportDetailScreen
 import com.example.opencity.ui.screens.SecuritySettingsScreen
-import kotlin.collections.remove
 
-private sealed interface TopLevelRoute {
-    val icon: ImageVector
-    val labelResourceId: Int
-}
-private interface SubLevelRoute {
-    val returnableTo: Boolean
-}
 
-private data object Map : TopLevelRoute {
-    override val icon = Icons.Outlined.Map
-    override val labelResourceId = R.string.bottom_bar_item_map
-}
-private data object Reports : TopLevelRoute {
-    override val icon = Icons.AutoMirrored.Outlined.Assignment
-    override val labelResourceId = R.string.bottom_bar_item_report
-}
-private data class ReportDetail(
-    val reportId: Int
-) : SubLevelRoute {
-    override val returnableTo = false
-}
-private data object Notifications : TopLevelRoute {
-    override val icon = Icons.Outlined.Notifications
-    override val labelResourceId = R.string.bottom_bar_item_notifications
-}
-private data object Account : TopLevelRoute {
-    override val icon = Icons.Outlined.AccountCircle
-    override val labelResourceId = R.string.bottom_bar_item_account
-}
-private data object ApplicationSettings : SubLevelRoute {
-    override val returnableTo = false
-}
-private data object SecuritySettings : SubLevelRoute {
-    override val returnableTo = false
-}
-private data object NotificationSettings : SubLevelRoute {
-    override val returnableTo = false
-}
-
-private val TOP_LEVEL_ROUTES : List<TopLevelRoute> = listOf(Map, Reports, Notifications, Account)
+private val TOP_LEVEL_ROUTES : List<TopLevelRoute> = listOf(
+    MapNavRoute,
+    ReportsNavRoute,
+    NotificationsNavRoute,
+    AccountNavRoute
+)
 
 
 @Composable
@@ -94,18 +60,18 @@ fun OpenCityApp(
         return
     }
 
-    val topLevelBackStack = remember { TopLevelBackStack<Any>(Map) }
+    val navigationStack = remember { NavigationStack<Any>(MapNavRoute) }
 
     Column (modifier = Modifier.fillMaxSize()){
         Scaffold(
             bottomBar = {
                 NavigationBar {
                     TOP_LEVEL_ROUTES.forEach { topLevelRoute ->
-                        val isSelected = topLevelRoute == topLevelBackStack.topLevelKey
+                        val isSelected = topLevelRoute == navigationStack.topLevelKey
                         NavigationBarItem(
                             selected = isSelected,
                             onClick = {
-                                topLevelBackStack.addTopLevel(topLevelRoute)
+                                navigationStack.addTopLevel(topLevelRoute)
                             },
                             icon = {
                                 Icon(
@@ -121,49 +87,55 @@ fun OpenCityApp(
         ) { innerPadding ->
             NavDisplay(
                 modifier = Modifier.padding(innerPadding),
-                backStack = topLevelBackStack.backStack,
-                onBack = { topLevelBackStack.removeLast() },
+                backStack = navigationStack.backStack,
+                onBack = { navigationStack.removeLast() },
                 entryProvider = entryProvider {
-                    entry<Map>{
+                    entry<MapNavRoute>{
                         MapScreen(onCreateReport = {}, currentSettings.mapOrientationMode)
                     }
-                    entry<Reports>{
+                    entry<ReportsNavRoute>{
                         ReportsScreen(
-                            onReportClick = { topLevelBackStack.add(ReportDetail(it)) }
+                            onReportClick = { navigationStack.add(ReportNavSubRouteReportDetail(it)) }
                         )
                     }
-                    entry<Notifications>{
+                    entry<NotificationsNavRoute>{
                         NotificationsScreen()
                     }
-                    entry<Account>{
+                    entry<AccountNavRoute>{
                         AccountScreen(
-                            onAppSettings = { topLevelBackStack.add(ApplicationSettings) },
-                            onNotificationSettings = { topLevelBackStack.add(NotificationSettings) },
-                            onSecuritySettings = { topLevelBackStack.add(SecuritySettings) }
+                            onAppSettings = { navigationStack.add(
+                                AccountNavSubRouteApplicationSettings
+                            ) },
+                            onNotificationSettings = { navigationStack.add(
+                                AccountNavSubRouteNotificationSettings
+                            ) },
+                            onSecuritySettings = { navigationStack.add(
+                                AccountNavSubRouteSecuritySettings
+                            ) }
                         )
                     }
-                    entry<ApplicationSettings>{
+                    entry<AccountNavSubRouteApplicationSettings>{
                         ApplicationSettingsScreen(
-                            onReturn = { topLevelBackStack.removeLast() },
+                            onReturn = { navigationStack.removeLast() },
                             settingsRepo = settingsRepo
                         )
                     }
-                    entry<NotificationSettings>{
+                    entry<AccountNavSubRouteNotificationSettings>{
                         NotificationSettingsScreen(
-                            onReturn = { topLevelBackStack.removeLast() },
+                            onReturn = { navigationStack.removeLast() },
                             settingsRepo = settingsRepo
                         )
                     }
-                    entry<SecuritySettings>{
+                    entry<AccountNavSubRouteSecuritySettings>{
                         SecuritySettingsScreen(
-                            onReturn = { topLevelBackStack.removeLast() },
+                            onReturn = { navigationStack.removeLast() },
                             settingsRepo = settingsRepo
                         )
                     }
-                    entry<ReportDetail> {
+                    entry<ReportNavSubRouteReportDetail> {
                         ReportDetailScreen(
                             report_id = it.reportId,
-                            onReturn = { topLevelBackStack.removeLast() }
+                            onReturn = { navigationStack.removeLast() }
                         )
                     }
                 },
@@ -172,46 +144,3 @@ fun OpenCityApp(
     }
 }
 
-
-class TopLevelBackStack<T: Any>(startKey: T) {
-    // Maintain a stack for each top level route
-    private var topLevelStacks : LinkedHashMap<T, SnapshotStateList<T>> = linkedMapOf(startKey to mutableStateListOf(startKey))
-
-    // Expose the current top level route for consumers
-    var topLevelKey by mutableStateOf(startKey)
-        private set
-
-    // Expose the back stack so it can be rendered by the NavDisplay
-    val backStack = mutableStateListOf(startKey)
-
-    private fun updateBackStack() = backStack.apply { clear(); addAll(topLevelStacks.flatMap { it.value }) }
-
-    private fun pruneNonReturnableCurrentTopLevel() {
-        topLevelStacks[topLevelKey]?.removeAll { route -> route is SubLevelRoute && !route.returnableTo }
-    }
-
-    fun addTopLevel(key: T){
-        pruneNonReturnableCurrentTopLevel()
-        // If the top level doesn't exist, add it
-        if (topLevelStacks[key] == null){ topLevelStacks[key] = mutableStateListOf(key) }
-        // Otherwise just move it to the end of the stacks
-        else { topLevelStacks.apply { remove(key)?.let { put(key, it) } } }
-        topLevelKey = key
-        pruneNonReturnableCurrentTopLevel()
-        updateBackStack()
-    }
-
-    fun add(key: T){
-        pruneNonReturnableCurrentTopLevel()
-        topLevelStacks[topLevelKey]?.add(key)
-        updateBackStack()
-    }
-
-    fun removeLast(){
-        val removedKey = topLevelStacks[topLevelKey]?.removeLastOrNull()
-        // If the removed key was a top level key, remove the associated top level stack
-        topLevelStacks.remove(removedKey)
-        topLevelKey = topLevelStacks.keys.last()
-        updateBackStack()
-    }
-}
