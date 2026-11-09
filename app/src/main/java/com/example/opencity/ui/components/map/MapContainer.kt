@@ -18,6 +18,7 @@ import com.example.opencity.R
 @Composable
 fun MapContainer(
     markers: List<Int>? = null,
+    markerPopUpHandler: (Int) -> Unit
 ) {
     Box (
         modifier = Modifier.fillMaxWidth().fillMaxHeight()
@@ -29,12 +30,14 @@ fun MapContainer(
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         // Example map markers
+        // will be a factory, based on the ids
         MarkerComponent(
             color = MaterialTheme.colorScheme.error,
             description = "Report Location",
             icon = Icons.Default.LocationOn,
             x = 80.dp,
             y = 120.dp,
+            onClick = {markerPopUpHandler(1)}
         )
         MarkerComponent(
             color = MaterialTheme.colorScheme.primary,
@@ -42,6 +45,7 @@ fun MapContainer(
             icon = Icons.Default.LocationOn,
             x = 240.dp,
             y = 220.dp,
+            onClick = {markerPopUpHandler(2)}
         )
     }
 }

@@ -43,22 +43,19 @@ import com.example.opencity.ui.components.map.CompassIcon
 import com.example.opencity.ui.components.map.MapContainer
 
 
-private data class MarkerInfo(
-    val report_id: Int
-)
 @Composable
 fun MapScreen(
     onCreateReport: () -> Unit,
     mapMode: MapOrientationMode
 ) {
-    var selectedMarker by remember { mutableStateOf<MarkerInfo?>(null) }
+    var selectedMarker by remember { mutableStateOf<Int?>(null) }
 
     Column(modifier = Modifier.fillMaxSize().padding(all = 0.dp)) {
         // UI for when a marker is "clicked"
-        selectedMarker?.let { report_id ->
+        selectedMarker?.let { reportId ->
             // TODO: pull from repo/modelview
             val report: Report = Report(
-                id = 67,
+                id = reportId,
                 title = "Report Title",
                 category = "Categoria",
                 description = "Report description",
@@ -68,7 +65,7 @@ fun MapScreen(
             )
             AlertDialog(
                 onDismissRequest = { selectedMarker = null },
-                title = { Text(text = report.title) },
+                title = { Text(text = "${report.title} DEBUG:${report.id}") },
                 text = {
                     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         Text(text = "Localização: ${report.address}")
@@ -88,10 +85,7 @@ fun MapScreen(
         Box(
             modifier = Modifier.weight(1f).fillMaxWidth()
         ) {
-            MapContainer()
-            /* FIXME: //
-             onClick = { selectedMarker = MarkerInfo(1) }
-            */
+            MapContainer(markerPopUpHandler = {id -> selectedMarker = id})
             Column(
                 modifier = Modifier.align(Alignment.TopEnd).padding(top = 4.dp, bottom = 0.dp, start = 0.dp, end = 10.dp),
                 horizontalAlignment = Alignment.End,
