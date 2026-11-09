@@ -44,7 +44,7 @@
     <string name="account_section_other_subtitle">Termos de utilização, licenças e informações do projeto</string>
     <string name="application_settings_screen_top_bar_title">Definições da Aplicação</string>
     <string name="application_settings_screen_top_bar_description">Personalize a sua experiência OpenCity</string>
-    <string name="security_settings_screen_top_bar_description">Personalize a suas defenições de segurança</string>
+    <string name="security_settings_screen_top_bar_description">Personalize a suas definições de segurança</string>
     <string name="settings_screen_appearance_section">Aparência</string>
     <string name="settings_screen_interface_mode_title">Modo de interface</string>
     <string name="settings_screen_interface_mode_description">Escolha o estilo de aparência da aplicação</string>
@@ -100,4 +100,20 @@
     <string name="notification_settings_screen_top_bar_description">Personalize as notificações que recebe</string>
     <string name="security_settings_screen_top_bar_title">Definições de Segurança</string>
     <string name="notification_settings_screen_top_bar_title">Definições de Notificações</string>
+    <string name="report_detail_title">Detalhes da Ocurrência</string>
+    <string name="report_detail_description">Descrição</string>
+    <string name="report_detail_location">Localização</string>
+    <string name="report_detail_date">Reportado em</string>
+    <string name="report_detail_actions">Ações da participação</string>
+    <string name="report_detail_sign_in">Faça login para comentar, confirmar ou refutar esta participação.</string>
+    <string name="report_detail_confirm">Confirmar validade</string>
+    <string name="report_detail_dispute">Reportar</string>
+    <string name="report_detail_follow">Seguir ocorrência</string>
+    <string name="report_detail_following">Seguindo ocorrência</string>
+    <string name="report_detail_comments">Comentários (%1$d)</string>
+    <string name="report_detail_no_comments">Sem comentários ainda.</string>
+    <string name="report_detail_add_comment">Escreva um comentário</string>
+    <string name="report_detail_send">Postar o comentário</string>
+
+
 </resources>

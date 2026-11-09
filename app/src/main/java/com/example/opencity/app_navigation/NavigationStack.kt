@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.vector.ImageVector
-import kotlin.collections.remove
 
 
 // had to remove 'sealed'
@@ -54,11 +53,22 @@ class NavigationStack<T: Any>(startKey: T) {
         updateBackStack()
     }
 
-    fun removeLast(){
-        val removedKey = topLevelStacks[topLevelKey]?.removeLastOrNull()
-        // If the removed key was a top level key, remove the associated top level stack
-        topLevelStacks.remove(removedKey)
-        topLevelKey = topLevelStacks.keys.last()
-        updateBackStack()
+    fun removeLast(): Boolean {
+        // get the current L1 stack, if it does not exist, return false
+        val currentStack = topLevelStacks[topLevelKey] ?: return false
+        // If L1 is more than 1(root), simply remove sub
+        if (currentStack.size > 1) {
+            currentStack.removeAt(currentStack.lastIndex)
+            updateBackStack()
+            return true
+        }
+        // Else, if L1 had only one, confirm if L0 is more than 1, if it is, go back to the last toplevel
+        if (topLevelStacks.size > 1) {
+            topLevelStacks.remove(topLevelKey)
+            topLevelKey = topLevelStacks.keys.last()
+            updateBackStack()
+            return true
+        }
+        return false  // Already at the root of the last top-level stack.
     }
 }

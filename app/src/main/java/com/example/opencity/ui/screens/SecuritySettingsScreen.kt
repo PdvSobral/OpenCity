@@ -47,7 +47,7 @@ fun SecuritySettingsScreen(
         ); } }
     */
     Column(modifier = Modifier.fillMaxSize()) {
-        TopBar(tittle = stringResource(R.string.application_settings_screen_top_bar_title), stringResource(R.string.application_settings_screen_top_bar_description), true, onReturn)
+        TopBar(tittle = stringResource(R.string.security_settings_screen_top_bar_title), stringResource(R.string.security_settings_screen_top_bar_description), true, onReturn)
         Column(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
             LazyColumn(
                 contentPadding = PaddingValues(bottom = 24.dp),

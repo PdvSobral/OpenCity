@@ -29,10 +29,7 @@ class MainActivity : AppCompatActivity() {
                     DarkModeType.LIGHT_MODE -> false
                     DarkModeType.AUTO -> isSystemInDarkTheme()
                 }
-            ) {
-                ServerAddressGate { _ -> OpenCityApp(settingsRepo = settingsRepository)
-                }
-            }
+            ) { ServerAddressGate { _ -> OpenCityApp(settingsRepo = settingsRepository) } }
         }
     }
 }

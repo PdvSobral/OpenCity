@@ -46,7 +46,7 @@ fun NotificationsScreen() {
     )
 
     Column(modifier = Modifier.fillMaxWidth()) {
-        TopBar(stringResource(R.string.top_bar_notifications_title), stringResource(R.string.reports_top_bar_description))
+        TopBar(stringResource(R.string.top_bar_notifications_title), stringResource(R.string.top_bar_notifications_description))
         Column( modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp) ) {
             LazyColumn(
                 contentPadding = PaddingValues(bottom = 16.dp),

@@ -1,7 +1,6 @@
 package com.example.opencity
 
 import android.app.ActivityManager
-import android.content.Context
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity

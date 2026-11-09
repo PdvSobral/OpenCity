@@ -1,38 +1,27 @@
 package com.example.opencity.ui.screens
 
-import android.annotation.SuppressLint
-import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.opencity.R
-import com.example.opencity.models.Account
-import com.example.opencity.models.AccountRole
-import com.example.opencity.models.Report
 import com.example.opencity.models.ReportStatus
 import com.example.opencity.models.toColourValue
 import com.example.opencity.models.toStringRes
-import com.example.opencity.ui.components.ReportCard
 import com.example.opencity.ui.components.TopBar
-import com.example.opencity.ui.theme.OpenCityTheme
 
 
 @Composable
 fun ReportDetailScreen(
-    report_id: Int,
+    reportId: Int,
     onReturn: () -> Unit,
 ) {
-    var vote by rememberSaveable(67) { mutableStateOf(0) }
+    var vote by rememberSaveable(67) { mutableIntStateOf(0) }
     val signedIn = false // will pull from ModelView
     var following by rememberSaveable(false) { mutableStateOf(false) }
 
@@ -40,12 +29,12 @@ fun ReportDetailScreen(
 
 
     // makes no sense why diferent. create a model for a comment.
-    var authors by rememberSaveable() { mutableStateOf(arrayListOf<String>()) }
-    var comments by rememberSaveable() { mutableStateOf(arrayListOf<String>()) }
+    var authors by rememberSaveable { mutableStateOf(arrayListOf<String>()) }
+    var comments by rememberSaveable { mutableStateOf(arrayListOf<String>()) }
 
 
     Column(modifier = Modifier.fillMaxSize()) {
-        TopBar(tittle = "${stringResource(R.string.report_detail_title)} DEBUG: $report_id", stringResource(R.string.report_detail_description), true, onReturn)
+        TopBar(tittle = "${stringResource(R.string.report_detail_title)} DEBUG: $reportId", stringResource(R.string.report_detail_description), true, onReturn)
         Column(modifier = Modifier.fillMaxSize().padding(horizontal = 16.dp)) {
             LazyColumn(
                 contentPadding = PaddingValues(bottom = 24.dp),

@@ -1,5 +1,11 @@
 package com.example.opencity
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
+import android.os.SystemClock
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.ui.Modifier
 import androidx.compose.runtime.Composable
@@ -13,9 +19,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Text
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
@@ -48,6 +57,15 @@ private val TOP_LEVEL_ROUTES : List<TopLevelRoute> = listOf(
     AccountNavRoute
 )
 
+private fun Context.findActivity(): Activity? {
+    var current: Context = this
+    while (current is ContextWrapper) {
+        if (current is Activity) return current
+        current = current.baseContext
+    }
+    return null
+}
+
 
 @Composable
 fun OpenCityApp(
@@ -61,6 +79,26 @@ fun OpenCityApp(
     }
 
     val navigationStack = remember { NavigationStack<Any>(MapNavRoute) }
+    val context = LocalContext.current
+    var lastBackPressTime by remember { mutableLongStateOf(0L) }
+
+    // code block that handles the backButton press
+    val handleBack = {
+        if (navigationStack.removeLast()) { lastBackPressTime = 0L }
+        else {
+            val now = SystemClock.elapsedRealtime()
+            if (now - lastBackPressTime <= 1_000L) { context.findActivity()?.finish() }
+            else {
+                lastBackPressTime = now
+                Toast.makeText(context, "Double tap to exit", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    // From testing, BackHandler is overwritten by the Navigation when the stack can go back.
+    // If it knows it cannot go back, it let's the system handle the call
+    // still, it might be wrong and think it cannot when it can, so be ready anyway
+    BackHandler(enabled = true, onBack = { handleBack() })
 
     Column (modifier = Modifier.fillMaxSize()){
         Scaffold(
@@ -88,30 +126,19 @@ fun OpenCityApp(
             NavDisplay(
                 modifier = Modifier.padding(innerPadding),
                 backStack = navigationStack.backStack,
-                onBack = { navigationStack.removeLast() },
+                // From testing, onBack is called when the stack can go back.
+                // If it knows it cannot go back, it let's the system handle the call
+                // still, it might be wrong and think it can when it cannot, so be ready anyway
+                onBack = { handleBack() },
                 entryProvider = entryProvider {
-                    entry<MapNavRoute>{
-                        MapScreen(onCreateReport = {}, currentSettings.mapOrientationMode)
-                    }
-                    entry<ReportsNavRoute>{
-                        ReportsScreen(
-                            onReportClick = { navigationStack.add(ReportNavSubRouteReportDetail(it)) }
-                        )
-                    }
-                    entry<NotificationsNavRoute>{
-                        NotificationsScreen()
-                    }
+                    entry<MapNavRoute>{ MapScreen(onCreateReport = {}, currentSettings.mapOrientationMode) }
+                    entry<ReportsNavRoute>{ ReportsScreen(onReportClick = { navigationStack.add(ReportNavSubRouteReportDetail(it)) }) }
+                    entry<NotificationsNavRoute>{ NotificationsScreen() }
                     entry<AccountNavRoute>{
                         AccountScreen(
-                            onAppSettings = { navigationStack.add(
-                                AccountNavSubRouteApplicationSettings
-                            ) },
-                            onNotificationSettings = { navigationStack.add(
-                                AccountNavSubRouteNotificationSettings
-                            ) },
-                            onSecuritySettings = { navigationStack.add(
-                                AccountNavSubRouteSecuritySettings
-                            ) }
+                            onAppSettings = { navigationStack.add(AccountNavSubRouteApplicationSettings) },
+                            onNotificationSettings = { navigationStack.add(AccountNavSubRouteNotificationSettings) },
+                            onSecuritySettings = { navigationStack.add(AccountNavSubRouteSecuritySettings) }
                         )
                     }
                     entry<AccountNavSubRouteApplicationSettings>{
@@ -134,7 +161,7 @@ fun OpenCityApp(
                     }
                     entry<ReportNavSubRouteReportDetail> {
                         ReportDetailScreen(
-                            report_id = it.reportId,
+                            reportId = it.reportId,
                             onReturn = { navigationStack.removeLast() }
                         )
                     }
@@ -143,4 +170,3 @@ fun OpenCityApp(
         }
     }
 }
-

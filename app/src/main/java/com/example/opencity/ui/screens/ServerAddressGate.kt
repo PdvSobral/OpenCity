@@ -76,8 +76,8 @@ fun ServerAddressGate(content: @Composable (String) -> Unit) {
         LanguageSelectorButton(
             languages = listOf(
                 LanguageOption("System Default", null, null),
-                LanguageOption("English", R.drawable.flag_en, "en"),
-                LanguageOption("Português", R.drawable.flag_pt_pt, "pt-PT")
+                LanguageOption(stringResource(R.string.language_english), R.drawable.flag_en, "en"),
+                LanguageOption(stringResource(R.string.language_portuguese), R.drawable.flag_pt_pt, "pt-PT")
             ),
             modifier = Modifier.align(Alignment.TopEnd).statusBarsPadding().padding(16.dp)
         )
@@ -167,6 +167,6 @@ private fun AddressForm(
             isError = error != null,
             supportingText = error?.let { message -> { Text(message) } }
         )
-        Button(onClick = onContinue, modifier = Modifier.fillMaxWidth()) { Text("Continue") }
+        Button(onClick = onContinue, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.continue_button)) }
     }
 }
