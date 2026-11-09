@@ -18,7 +18,9 @@ import com.example.opencity.ui.components.ReportCard
 import com.example.opencity.ui.components.TopBar
 
 @Composable
-fun ReportsScreen() {
+fun ReportsScreen(
+    onReportClick: (Report) -> Unit = {},
+) {
     val reports = listOf(
         Report(
             id = 1,
@@ -55,10 +57,11 @@ fun ReportsScreen() {
             LazyColumn(
                 contentPadding = PaddingValues(bottom = 16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {items(reports) { report -> ReportCard(report = report)}}
+            ) {items(reports, key = { it.id }) { report ->
+                val displayedReport = report.copy(status = report.status)
+                ReportCard(report = displayedReport, onClick = { onReportClick(displayedReport) })
+            }}
         }
     }
-
-
 }
 

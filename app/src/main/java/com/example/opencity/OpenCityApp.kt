@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
+import com.example.opencity.ReportScreen
 import com.example.opencity.storage.AppSettings
 import com.example.opencity.ui.screens.ApplicationSettingsScreen
 import com.example.opencity.ui.screens.AccountScreen
@@ -126,7 +127,9 @@ fun OpenCityApp(
                         MapScreen(onCreateReport = {}, currentSettings.mapOrientationMode)
                     }
                     entry<Reports>{
-                        ReportsScreen()
+                        ReportsScreen(
+                            onReportClick = { topLevelBackStack.add(ReportScreen) }
+                        )
                     }
                     entry<Notifications>{
                         NotificationsScreen()
