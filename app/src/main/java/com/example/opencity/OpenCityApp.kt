@@ -29,7 +29,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.ui.NavDisplay
-import com.example.opencity.ReportScreen
 import com.example.opencity.storage.AppSettings
 import com.example.opencity.ui.screens.ApplicationSettingsScreen
 import com.example.opencity.ui.screens.AccountScreen
@@ -38,6 +37,7 @@ import com.example.opencity.ui.screens.NotificationsScreen
 import com.example.opencity.ui.screens.ReportsScreen
 import com.example.opencity.storage.SettingsRepository
 import com.example.opencity.ui.screens.NotificationSettingsScreen
+import com.example.opencity.ui.screens.ReportDetailScreen
 import com.example.opencity.ui.screens.SecuritySettingsScreen
 import kotlin.collections.remove
 
@@ -57,9 +57,10 @@ private data object Reports : TopLevelRoute {
     override val icon = Icons.AutoMirrored.Outlined.Assignment
     override val labelResourceId = R.string.bottom_bar_item_report
 }
-private data object ReportScreen: SubLevelRoute {
+private data class ReportDetail(
+    val reportId: Int
+) : SubLevelRoute {
     override val returnableTo = false
-    val report_id: Int? = null
 }
 private data object Notifications : TopLevelRoute {
     override val icon = Icons.Outlined.Notifications
@@ -128,7 +129,7 @@ fun OpenCityApp(
                     }
                     entry<Reports>{
                         ReportsScreen(
-                            onReportClick = { topLevelBackStack.add(ReportScreen) }
+                            onReportClick = { topLevelBackStack.add(ReportDetail(it)) }
                         )
                     }
                     entry<Notifications>{
@@ -159,10 +160,11 @@ fun OpenCityApp(
                             settingsRepo = settingsRepo
                         )
                     }
-                    entry<ReportScreen> {
-                        // TODO: make the screen for reports, receives the report uuid.
-                        // for now, on the screen, we can put static data form a Report struct,
-                        // then we only need to change that (id will pass with it.report_id)
+                    entry<ReportDetail> {
+                        ReportDetailScreen(
+                            report_id = it.reportId,
+                            onReturn = { topLevelBackStack.removeLast() }
+                        )
                     }
                 },
             )

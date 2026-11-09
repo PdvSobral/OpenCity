@@ -19,7 +19,7 @@ import com.example.opencity.ui.components.TopBar
 
 @Composable
 fun ReportsScreen(
-    onReportClick: (Report) -> Unit = {},
+    onReportClick: (Int) -> Unit = {},
 ) {
     val reports = listOf(
         Report(
@@ -59,9 +59,8 @@ fun ReportsScreen(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {items(reports, key = { it.id }) { report ->
                 val displayedReport = report.copy(status = report.status)
-                ReportCard(report = displayedReport, onClick = { onReportClick(displayedReport) })
+                ReportCard(report = displayedReport, onClick = { onReportClick(displayedReport.id) })
             }}
         }
     }
 }
-
