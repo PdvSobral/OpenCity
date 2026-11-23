@@ -11,6 +11,30 @@ import com.example.opencity.models.enums.MapOrientationMode
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
+interface AppSettingsInterface {
+    fun getSettings(): Flow<AppSettings>
+    suspend fun <K, V> setSettingValue(option: SettingOption<K, V>, value: V)
+}
+class AppSettingsRepository (
+    private val context: Context
+) : AppSettingsInterface {
+    override fun getSettings(): Flow<AppSettings> {
+        return context.settingsDataStore.data.map { prefs ->
+            AppSettings(
+                serverAddress = Settings.SERVER_ADDRESS.readFrom(prefs),
+                notificationsEnabled = Settings.NOTIFICATIONS_ENABLED.readFrom(prefs),
+                themeMode = Settings.THEME_MODE.readFrom(prefs),
+                mapOrientationMode = Settings.MAP_ORIENTATION_MODE.readFrom(prefs),
+                animationsOn = Settings.ANIMATIONS.readFrom(prefs),
+                nearbyReports = Settings.NEARBY_REPORTS.readFrom(prefs)
+            )
+        }
+    }
+    override suspend fun <K, V> setSettingValue(option: SettingOption<K, V>, value: V) {
+        context.settingsDataStore.edit { prefs -> prefs[option.key] = option.encode(value) }
+    }
+}
+
 // Declare this once at top level so the app uses one DataStore instance.
 private val Context.settingsDataStore by preferencesDataStore(name = "settings")
 
@@ -76,22 +100,3 @@ data class AppSettings(
     val animationsOn: Boolean = Settings.ANIMATIONS.defaultValue,
     val nearbyReports: Boolean = Settings.NEARBY_REPORTS.defaultValue
 )
-
-
-class SettingsRepository(private val context: Context) {
-
-    val settings: Flow<AppSettings> = context.settingsDataStore.data.map { prefs ->
-        AppSettings(
-            serverAddress = Settings.SERVER_ADDRESS.readFrom(prefs),
-            notificationsEnabled = Settings.NOTIFICATIONS_ENABLED.readFrom(prefs),
-            themeMode = Settings.THEME_MODE.readFrom(prefs),
-            mapOrientationMode = Settings.MAP_ORIENTATION_MODE.readFrom(prefs),
-            animationsOn = Settings.ANIMATIONS.readFrom(prefs),
-            nearbyReports = Settings.NEARBY_REPORTS.readFrom(prefs)
-        )
-    }
-
-    suspend fun <K, V> setSettingValue(option: SettingOption<K, V>, value: V) {
-        context.settingsDataStore.edit { prefs -> prefs[option.key] = option.encode(value) }
-    }
-}

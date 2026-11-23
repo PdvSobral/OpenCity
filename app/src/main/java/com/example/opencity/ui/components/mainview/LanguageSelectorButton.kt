@@ -1,4 +1,4 @@
-package com.example.opencity.ui.components
+package com.example.opencity.ui.components.mainview
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.*

@@ -39,7 +39,7 @@ import com.example.opencity.app_navigation.routes.NotificationsNavRoute
 import com.example.opencity.app_navigation.routes.ReportNavSubRouteReportDetail
 import com.example.opencity.app_navigation.routes.ReportsNavRoute
 import com.example.opencity.storage.AppSettings
-import com.example.opencity.storage.SettingsRepository
+import com.example.opencity.storage.AppSettingsInterface
 import com.example.opencity.ui.screens.ApplicationSettingsScreen
 import com.example.opencity.ui.screens.AccountScreen
 import com.example.opencity.ui.screens.MapScreen
@@ -69,9 +69,9 @@ private fun Context.findActivity(): Activity? {
 
 @Composable
 fun OpenCityApp(
-    settingsRepo: SettingsRepository
+    settingsRepo: AppSettingsInterface
 ) {
-    val settings by produceState<AppSettings?>(initialValue = null, key1 = settingsRepo) { settingsRepo.settings.collect { value = it } }
+    val settings by produceState<AppSettings?>(initialValue = null, key1 = settingsRepo) { settingsRepo.getSettings().collect { value = it } }
     val currentSettings = settings
     if (currentSettings == null) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }

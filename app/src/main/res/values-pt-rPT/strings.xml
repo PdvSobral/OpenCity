@@ -114,6 +114,7 @@
     <string name="report_detail_no_comments">Sem comentários ainda.</string>
     <string name="report_detail_add_comment">Escreva um comentário</string>
     <string name="report_detail_send">Postar o comentário</string>
+    <string name="language_system_default">Definição do Sistema</string>
 
 
 </resources>

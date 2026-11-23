@@ -3,63 +3,36 @@ package com.example.opencity.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import com.example.opencity.storage.SettingsRepository
-import com.example.opencity.storage.AppSettings
-import kotlinx.coroutines.launch
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import com.example.opencity.R
 import com.example.opencity.models.LanguageOption
-import com.example.opencity.storage.Settings
-import com.example.opencity.ui.components.LanguageSelectorButton
+import com.example.opencity.ui.components.mainview.AddressForm
+import com.example.opencity.ui.components.mainview.Instructions
+import com.example.opencity.ui.components.mainview.LanguageSelectorButton
+import com.example.opencity.ui.view_models.MainViewModel
 
 
 @Composable
-fun ServerAddressGate(content: @Composable (String) -> Unit) {
-    val context = LocalContext.current
-    val repository = remember(context.applicationContext) {
-        SettingsRepository(context.applicationContext)
-    }
-    val scope = rememberCoroutineScope()
-    val settings by produceState<AppSettings?>(
-        initialValue = null,
-        key1 = repository
-    ) { repository.settings.collect { value = it } }
-
-    val currentSettings = settings
-    if (currentSettings == null) {
-        // Loading... No one can escape the damn loading screen... Muahahahaha! (*mental sanity left chat*)
-        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
-        return
-    }
-
-    val savedAddress = currentSettings.serverAddress.takeIf { it.isNotBlank() } // default is "", quite literally
-
+fun ServerAddressGate(
+    viewModel: MainViewModel
+) {
     var input by remember { mutableStateOf("") }
     var error by remember { mutableStateOf<String?>(null) }
     var pendingHttpAddress by remember { mutableStateOf<String?>(null) }
 
     fun saveAddress(address: String) {
-        scope.launch { repository.setSettingValue(Settings.SERVER_ADDRESS, address); }
+        viewModel.setServerAddress(address)
         pendingHttpAddress = null
-    }
-
-    if (savedAddress != null) {
-        content(savedAddress) // pass the string to rest of code
-        return // return to caller
     }
 
     Box(
@@ -74,8 +47,8 @@ fun ServerAddressGate(content: @Composable (String) -> Unit) {
         contentAlignment = Alignment.Center
     ) {
         LanguageSelectorButton(
-            languages = listOf(
-                LanguageOption("System Default", null, null),
+            languages = listOf( // TODO: Pull from LanguageRepository
+                LanguageOption(stringResource(R.string.language_system_default), null, null),
                 LanguageOption(stringResource(R.string.language_english), R.drawable.flag_en, "en"),
                 LanguageOption(stringResource(R.string.language_portuguese), R.drawable.flag_pt_pt, "pt-PT")
             ),
@@ -120,53 +93,5 @@ fun ServerAddressGate(content: @Composable (String) -> Unit) {
             dismissButton = { TextButton(onClick = { pendingHttpAddress = null }) { Text(stringResource(
                 R.string.go_back)) } }
         )
-    }
-}
-
-@Composable
-private fun Instructions(modifier: Modifier = Modifier) {
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Text(
-            text = stringResource(R.string.connect_title),
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold
-        )
-        Text(
-            text = stringResource(R.string.connect_instructions),
-            style = MaterialTheme.typography.bodyLarge
-        )
-        Text(
-            text = stringResource(R.string.security_note),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.error
-        )
-    }
-}
-
-@Composable
-private fun AddressForm(
-    input: String,
-    error: String?,
-    onInputChange: (String) -> Unit,
-    onContinue: () -> Unit,
-    modifier: Modifier = Modifier
-) {
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(12.dp)) {
-        Text(
-            text = stringResource(R.string.server_address),
-            style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.SemiBold
-        )
-        OutlinedTextField(
-            value = input,
-            onValueChange = onInputChange,
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true,
-            placeholder = { Text(stringResource(R.string.server_address_placeholder)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Uri),
-            isError = error != null,
-            supportingText = error?.let { message -> { Text(message) } }
-        )
-        Button(onClick = onContinue, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.continue_button)) }
     }
 }

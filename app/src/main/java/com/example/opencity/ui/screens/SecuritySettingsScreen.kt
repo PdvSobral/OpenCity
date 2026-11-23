@@ -21,7 +21,7 @@ import com.example.opencity.ui.components.TopBar
 import com.example.opencity.ui.components.settings.SettingsAction
 import com.example.opencity.ui.components.settings.SettingsSection
 import com.example.opencity.storage.AppSettings
-import com.example.opencity.storage.SettingsRepository
+import com.example.opencity.storage.AppSettingsInterface
 import kotlinx.coroutines.CoroutineScope
 
 
@@ -29,10 +29,10 @@ import kotlinx.coroutines.CoroutineScope
 fun SecuritySettingsScreen(
     onAccountSettings: () -> Unit = {},
     onReturn: () -> Unit = {},
-    settingsRepo: SettingsRepository
+    settingsRepo: AppSettingsInterface
 ) {
     val scope: CoroutineScope = rememberCoroutineScope()
-    val settings by produceState<AppSettings?>(initialValue = null, key1 = settingsRepo) { settingsRepo.settings.collect { value = it } }
+    val settings by produceState<AppSettings?>(initialValue = null, key1 = settingsRepo) { settingsRepo.getSettings().collect { value = it } }
     val currentSettings = settings
     if (currentSettings == null) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }

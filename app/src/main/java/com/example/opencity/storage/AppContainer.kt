@@ -12,7 +12,9 @@ class OpenCityApplication : Application() {
 }
 
 class AppContainer(context: Context) {
-    val settingsRepository: SettingsRepository = SettingsRepository(context.applicationContext)
+    val settingsRepository: AppSettingsInterface by lazy { AppSettingsRepository(context.applicationContext) }
+    val languageRepository: LanguageRepositoryInterface by lazy { LanguageRepository() }
+    
     /*
     val sessionRepository: SessionRepository = InMemorySessionRepository()   // signed-in state
     val reportRepository: ReportRepository = InMemoryReportRepository()     // replaces the literals

@@ -40,8 +40,8 @@ import com.example.opencity.ui.components.settings.SettingsOption
 import com.example.opencity.models.enums.DarkModeType
 import com.example.opencity.models.enums.MapOrientationMode
 import com.example.opencity.storage.AppSettings
+import com.example.opencity.storage.AppSettingsInterface
 import com.example.opencity.storage.Settings
-import com.example.opencity.storage.SettingsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -51,10 +51,10 @@ fun ApplicationSettingsScreen(
     onManageMarkers: () -> Unit = {},
     onOfflineMaps: () -> Unit = {},
     onReturn: () -> Unit = {},
-    settingsRepo: SettingsRepository
+    settingsRepo: AppSettingsInterface
 ) {
     val scope: CoroutineScope = rememberCoroutineScope()
-    val settings by produceState<AppSettings?>(initialValue = null, key1 = settingsRepo) { settingsRepo.settings.collect { value = it } }
+    val settings by produceState<AppSettings?>(initialValue = null, key1 = settingsRepo) { settingsRepo.getSettings().collect { value = it } }
     val currentSettings = settings
     if (currentSettings == null) {
         Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
